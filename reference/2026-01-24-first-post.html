@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setting Up This Blog with Cloud Run - Zaid's Blog</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1><a href="/">Zaid's Blog</a></h1>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/posts">Posts</a>
+        <a href="/about">About</a>
+      </nav>
+    </header>
+
+    <article>
+      <header>
+        <h1>Setting Up This Blog with Cloud Run</h1>
+        <time>January 24, 2026</time>
+      </header>
+
+      <p>
+        I wanted a dead-simple blog where I could write weekly reflections. 
+        No frameworks, no build steps, just HTML files served by nginx.
+      </p>
+
+      <h2>The Stack</h2>
+      <p>
+        It's about as minimal as it gets:
+      </p>
+      <ul>
+        <li>Plain HTML + CSS</li>
+        <li>Nginx in a Docker container</li>
+        <li>Cloud Run for hosting</li>
+        <li>Cloud Build for CI/CD</li>
+      </ul>
+
+      <h2>How It Works</h2>
+      <p>
+        I write a new <code>.html</code> file, push to main, and Cloud Build 
+        automatically builds the container and deploys to Cloud Run. 
+        The whole deploy takes about 90 seconds.
+      </p>
+
+      <h2>Cost</h2>
+      <p>
+        With Cloud Run's generous free tier and min-instances set to 0, 
+        this should cost almost nothing. Maybe a few cents a month 
+        unless I get unexpectedly popular.
+      </p>
+
+      <p>
+        Next week I'll write about something I actually learned at work.
+      </p>
+    </article>
+
+    <footer>
+      <p><a href="/posts">&larr; All posts</a></p>
+    </footer>
+  </main>
+</body>
+</html>
