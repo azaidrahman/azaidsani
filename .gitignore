@@ -1,2 +1,4 @@
 .DS_Store
 *CLAUDE*
+public/
+.hugo_build.lock

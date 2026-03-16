@@ -1,44 +1,44 @@
-# Zaid's Blog
+# Zaid's Personal Website
 
-Personal website built with Go, deployed on Cloud Run.
+A writing-focused personal site.
+
+## Plan
+
+### Phase 1 — Hugo + Cloudflare Pages (current)
+
+- **Hugo** static site generator with the [risotto](https://github.com/joeroe/risotto) theme
+- **Cloudflare Pages** for hosting (auto-deploys from `main`)
+- **Cloudflare Registrar** for domain
+- Homepage inspired by brennan.io — clean, text-forward landing page with short intro and highlighted posts
+
+### Phase 2 — Self-hosted Go server
+
+Migrate to a custom Go server (details TBD).
+
+## Project Structure (Phase 1)
+
+```
+content/_index.md  → homepage content (short bio/intro)
+content/posts/     → markdown blog posts
+content/about/     → optional about page
+static/            → static assets
+themes/risotto/    → Hugo theme (git submodule)
+```
 
 ## Local Development
 
 ```bash
-go run main.go
+hugo server -D
 ```
 
-Visit http://localhost:8090
-
-## Docker
+## Production Build
 
 ```bash
-docker build -t blog .
-docker run -p 8080:8080 -e PORT=8080 blog
+hugo --minify
 ```
 
-Visit http://localhost:8080
+Output goes to `public/`.
 
-## Deploy to GCP
+## Deploy
 
-### First-time setup
-
-```bash
-export PROJECT_ID=your-project-id
-gcloud config set project $PROJECT_ID
-
-gcloud services enable \
-  cloudbuild.googleapis.com \
-  run.googleapis.com \
-  containerregistry.googleapis.com
-```
-
-### Manual deploy
-
-```bash
-gcloud builds submit --config cloudbuild.yaml
-```
-
-## Cost
-
-With min-instances=0: **$0-2/month** unless you go viral.
+Push to `main`. Cloudflare Pages builds automatically.
