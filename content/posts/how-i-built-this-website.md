@@ -2,7 +2,7 @@
 title: "How I Built This Website"
 date: 2026-03-16
 draft: false
-tags: ["meta", "hugo", "devops"]
+tags: []
 ---
 
 This is a placeholder — write about your setup here. Some ideas to cover:

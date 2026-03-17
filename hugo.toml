@@ -8,6 +8,7 @@ sectionPagesMenu = "main"
 [params.about]
   title = "Zaid"
   description = "Software engineer. I like movies too!"
+  logo_image = "/zaid.jpeg"
 
 [[params.socialLinks]]
   icon = "fa-brands fa-github"
@@ -18,6 +19,11 @@ sectionPagesMenu = "main"
   icon = "fa-brands fa-linkedin"
   title = "LinkedIn"
   url = "https://www.linkedin.com/in/abdullah-zaid/"
+
+[[params.socialLinks]]
+  icon = "fa-brands fa-square-letterboxd"
+  title = "Letterboxd"
+  url = "https://letterboxd.com/sanisideup/"
 
 [markup.goldmark.renderer]
   unsafe = true
