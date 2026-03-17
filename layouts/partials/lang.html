@@ -41,7 +41,7 @@
     100% { opacity: 0; }
 }
 
-.terminal-output::after {
+.terminal-output span::after {
     content: "█";
     animation: blink 1s step-end infinite;
 }
@@ -55,13 +55,7 @@
 <p class="terminal-row">
     <br/>
     <span class="command">$ echo $USER</span><br/>
-    <span class="terminal-output">
-        <span>ZAID</span>
-        <span>SANI</span>
-        <span>MOVIE_BUFF</span>
-        <span>DEVOPS_ENGINEER</span>
-        <span>SELF_TAUGHT</span>
-    </span>
+    <span class="terminal-output"><span>ZAID</span><span>SANI</span><span>MOVIE_BUFF</span><span>DEVOPS_ENGINEER</span><span>SELF_TAUGHT</span></span>
     <br/>
 </p>
 <br /><br />
