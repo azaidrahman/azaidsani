@@ -7,4 +7,4 @@ I'm Abdullah Zaid. I am mainly working in DevOps at the moment. Self-taught, emp
 This site is mostly a playground for exploring web development, infrastructure, and non-essential CI/CD. I'll update it when I can.
 
 [^1]: Products is used loosely here, depending on if you enjoy infrastructure
-    adjacent software. 
+    adjacent software.
