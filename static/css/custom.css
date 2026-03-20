@@ -1,9 +1,26 @@
-/* Inter for blog body text and description — headings/sidebar/nav keep Fira Mono */
-.content__body p,
-.content__body li,
-.content__body figcaption,
+/* Inter for body text and description — headings/sidebar/nav keep Fira Mono */
+.page__body p,
+.page__body li,
+.page__body figcaption,
 .about__description {
-    font-family: "Inter", sans-serif;
+    /* font-family: "Inter", sans-serif; */
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 1.1rem;
+}
+
+/* Push recent posts to the bottom of the grey body div */
+.page__body {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    box-shadow: none;
+    background-color: var(--off-bg);
+    border-radius: 4px;
+}
+
+.recent-posts {
+    margin-top: auto;
+    font-size: 1.1rem;
 }
 
 .about__title {
