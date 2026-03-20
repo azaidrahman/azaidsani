@@ -1,0 +1,4 @@
+<figure class="movies">
+  <img src="{{ .Get "src" }}" alt="{{ with .Get "caption" }}{{ . }}{{ else }}{{ .Get "src" }}{{ end }}">
+  {{ with .Get "caption" }}<figcaption>{{ . }}</figcaption>{{ end }}
+</figure>
