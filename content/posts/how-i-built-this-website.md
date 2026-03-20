@@ -9,15 +9,20 @@ I've been meaning to put a personal site together for a while. Not anything fanc
 
 ## The stack
 
-The site runs on [Hugo](https://gohugo.io/), a static site generator written in Go. I went with Hugo because it's fast, simple, and I'm learning Go anyway so I figured I'd stay in that ecosystem. The theme is [risotto](https://github.com/joeroe/risotto) — clean, text-forward, no distractions. Exactly what I wanted.
+The site runs on [Hugo](https://gohugo.io/), a static site generator written in Go. Something you've probably have heard of. I went with Hugo because it's fast, simple, and I'm learning Go anyway so I figured I'd stay in that ecosystem. 
 
-For hosting I'm using Cloudflare Pages. The CI/CD is dead simple: push to `main` and Cloudflare builds and deploys automatically. No pipelines to maintain, no servers to babysit. For someone who does DevOps during the day, it's nice to not have to think about infrastructure for once.
+The *theme* is [risotto](https://github.com/joeroe/risotto) simply because its clean, text-forward, no distractions. Exactly what I wanted.
+
+For *hosting* I'm using Cloudflare Pages. The CI/CD is just: push to `main` and Cloudflare builds. Why? Mostly because theres no servers to babysit. For someone who does that for a living during the day, it's nice to just keep it simple stupid.
 
 ## AI did most of the heavy lifting
 
 To be honest, I used AI (Claude) to build most of this. The Hugo config, the project structure, getting the theme wired up, the deployment setup. I described what I wanted and worked through it conversationally. I'm not a frontend developer and I didn't want to spend hours reading Hugo docs for what's ultimately a simple static site.
 
 That said, I'm not trying to hand everything off to AI and call it a day. I'm using this site as a way to actually learn web development and CSS on my own terms. The AI helped me get the scaffolding up fast so I could focus on understanding the pieces rather than fighting with boilerplate.
+
+More importantly, I want to just keep writing more. Writing in public is a
+pretty cool way to learn.
 
 ## What's next
 
