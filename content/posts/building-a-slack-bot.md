@@ -5,7 +5,7 @@ draft: false
 tags: ["slack", "jira", "ai", "devops"]
 ---
 
-{{< figure src="/images/the_presidents_cake-roof_scene.webp" caption="The Presidents Cake (2025)" >}}
+{{< movies src="/images/the_presidents_cake-roof_scene.webp" caption="The Presidents Cake (2025)" >}}
 
 The volume of GCP requests coming through at work has been growing steadily. At first it was manageable, a ticket here, a thread there. But the longer it went on, the less confident I was that I could keep up without things falling through the cracks.  
 
@@ -25,7 +25,7 @@ So instead of adding more loops inside Jira, I thought about tapping into someth
 
 The result is a Slack bot. Users run `/gcp-request`, fill out a quick modal, and a Jira ticket gets created automatically. The summary gets posted to a shared channel, and any replies in the Slack thread sync back to Jira as comments. People stay in Slack, I get structured tickets. Everyone wins.
 
-{{< figure src="/images/geronimo (1).png" caption="Jira-nimo Stilton Bot" >}}
+{{< mid-img src="/images/geronimo-1.png" caption="Jira-nimo Stilton Bot" >}}
 
 ## Influenced by Grab
 
