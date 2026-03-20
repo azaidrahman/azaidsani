@@ -1,3 +1,11 @@
+/* Inter for blog body text and description — headings/sidebar/nav keep Fira Mono */
+.content__body p,
+.content__body li,
+.content__body figcaption,
+.about__description {
+    font-family: "Inter", sans-serif;
+}
+
 .about__title {
     display: block !important;
 }
@@ -28,4 +36,33 @@ img.about__logo {
     height: auto !important;
     margin: 0.75rem 0;
     border-radius: 6px;
+}
+
+/* Movies — full-width landscape images */
+.movies {
+    margin: 1rem 0;
+}
+
+.movies img {
+    width: 100%;
+    height: auto;
+}
+
+.movies figcaption {
+    text-align: center;
+}
+
+/* Mid-img — centered, height-capped images */
+.mid-img {
+    margin: 1rem auto;
+    text-align: center;
+}
+
+.mid-img img {
+    max-height: 350px;
+    width: auto;
+}
+
+.mid-img figcaption {
+    text-align: center;
 }
