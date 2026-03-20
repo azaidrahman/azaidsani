@@ -246,7 +246,7 @@
   });
 
   // GitHub events baked in at build time from data/github_events.json
-  var events = {{ with .Site.Data.github_events }}{{ . | jsonify }}{{ else }}[]{{ end }};
+  var events = {{ with .Site.Data.github_events }}{{ . | jsonify | safeJS }}{{ else }}[]{{ end }};
   if (Array.isArray(events)) {
     events.forEach(function(ev) {
       if (ev.type === 'PushEvent') {
