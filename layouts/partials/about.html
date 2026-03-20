@@ -15,6 +15,7 @@
 </ul>
 
 <!-- Activity Calendar -->
+<h2 class="acal-title">Activity Calendar</h2>
 <div id="activity-cal">
   <div class="acal-header">
     <button class="acal-arrow" id="acal-prev" aria-label="Previous month">&lsaquo;</button>
@@ -29,10 +30,14 @@
 </div>
 
 <style>
-  #activity-cal {
+  .acal-title {
     margin-top: 1rem;
     padding-top: 0.8rem;
     border-top: 1px solid var(--border, #e0e0e0);
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+  #activity-cal {
   }
   .acal-header {
     display: flex;
@@ -240,24 +245,18 @@
     updateArrows();
   });
 
-  fetch('https://api.github.com/users/azaidrahman/events?per_page=100')
-    .then(function(r) { return r.json(); })
-    .then(function(events) {
-      if (Array.isArray(events)) {
-        events.forEach(function(ev) {
-          if (ev.type === 'PushEvent') {
-            var date = ev.created_at.slice(0, 10);
-            var count = (ev.payload && ev.payload.commits) ? ev.payload.commits.length : 1;
-            commitMap[date] = (commitMap[date] || 0) + count;
-          }
-        });
+  // GitHub events baked in at build time from data/github_events.json
+  var events = {{ with .Site.Data.github_events }}{{ . | jsonify }}{{ else }}[]{{ end }};
+  if (Array.isArray(events)) {
+    events.forEach(function(ev) {
+      if (ev.type === 'PushEvent') {
+        var date = ev.created_at.slice(0, 10);
+        var count = (ev.payload && ev.payload.commits) ? ev.payload.commits.length : 1;
+        commitMap[date] = (commitMap[date] || 0) + count;
       }
-      render();
-      updateArrows();
-    })
-    .catch(function() {
-      render();
-      updateArrows();
     });
+  }
+  render();
+  updateArrows();
 })();
 </script>
