@@ -7,13 +7,9 @@ tags: ["slack", "jira", "ai", "devops"]
 
 {{< movies src="/images/the_presidents_cake-roof_scene.webp" caption="The Presidents Cake (2025)" >}}
 
-The volume of GCP requests coming through at work has been growing steadily. At first it was manageable, a ticket here, a thread there. But the longer it went on, the less confident I was that I could keep up without things falling through the cracks.  
+Tickets are a pain and a big deterrent to actual work. Someones gotta do it though. At first it was manageable, a request here, a thread there. As it went on, the less confident I was that I could keep up. 
 
-GCP requests are a pain and a big deterrent to actual work. Someones gotta do it
-though. At first it was manageable, a ticket here, a thread there. As it went
-on, the less conifdent I was that I could keep up. Reminders from weeks back of
-a simple permission request started showing up and I realized I had to sort this
-out somehow.
+Reminders from weeks back of a simple permission request started showing up and I realized I had to sort this out somehow.
 
 So I decided to spend a day or two using AI to build something that would actually help.
 
@@ -35,7 +31,7 @@ I'd recently read [Grab's engineering post about agents in Slack](https://engine
 
 I won't get into the technical details too much. It's a Python bot using Slack Bolt, deployed on Cloud Run, nothing groundbreaking. What I actually want to talk about is how I built it.
 
-I've been using Claude Code for a while now, but for this project I decided to go deeper with [superpowers](https://github.com/anthropics/claude-code-plugins), particularly test driven development. I'd used it before but never fully committed to the workflow. This time I did, and it changed how the whole thing came together.
+I've been using Claude Code for a while now, but for this project I decided to go deeper with obra's [superpowers](https://github.com/obra/superpowers), particularly test driven development. I'd used it before but never fully committed to the workflow. This time I did, and it changed how the whole thing came together.
 
 Writing tests first, then letting AI generate the implementation to pass those tests. It sounds simple, but the effect is significant. Instead of reviewing AI generated code and hoping it works, you're defining the behavior upfront and verifying it automatically. The tests become the spec. The AI fills in the rest.
 
