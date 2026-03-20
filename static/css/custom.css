@@ -77,9 +77,34 @@ img.about__logo {
 
 .mid-img img {
     max-height: 350px;
+    max-width: 100%;
     width: auto;
 }
 
 .mid-img figcaption {
     text-align: center;
+}
+
+/* --- Mobile --- */
+
+/* Prevent images from overflowing on small screens */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Tighter padding + fix sidebar overlap on narrow viewports */
+@media (max-width: 45rem) {
+    .page__body {
+        padding: 1rem;
+    }
+
+    .page__aside {
+        position: static;
+        max-height: none;
+    }
+
+    .not-home .page__aside {
+        display: none;
+    }
 }
