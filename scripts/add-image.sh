@@ -8,6 +8,11 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+if ! command -v sips &>/dev/null; then
+  echo "Error: sips not found. This script requires macOS."
+  exit 1
+fi
+
 mkdir -p static/images
 shortcodes=()
 
@@ -40,11 +45,23 @@ for src in "$@"; do
   echo "Moved to: static/images/${cleaned}"
   echo ""
 
+  # Detect dimensions and pick tag
+  dims=$(sips -g pixelWidth -g pixelHeight "static/images/${cleaned}")
+  width=$(echo "$dims" | awk '/pixelWidth/{print $2}')
+  height=$(echo "$dims" | awk '/pixelHeight/{print $2}')
+
+  if [ "$((width))" -gt "$((height * 3 / 2))" ]; then
+    tag="movies"
+  else
+    tag="mid-img"
+  fi
+  echo "Detected: ${width}x${height} -> ${tag}"
+
   # Collect shortcode
   if [ -n "$caption" ]; then
-    shortcodes+=("{{< figure src=\"/images/${cleaned}\" caption=\"${caption}\" >}}")
+    shortcodes+=("{{< ${tag} src=\"/images/${cleaned}\" caption=\"${caption}\" >}}")
   else
-    shortcodes+=("{{< figure src=\"/images/${cleaned}\" >}}")
+    shortcodes+=("{{< ${tag} src=\"/images/${cleaned}\" >}}")
   fi
 done
 
