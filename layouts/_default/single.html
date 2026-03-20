@@ -1,0 +1,30 @@
+{{ define "main" }}
+    <header class="post-header">
+        <h1 class="post-header__title">{{ .Title | markdownify }}</h1>
+        <p class="post-header__meta">
+            {{ if .Date }}{{ .Date.Format "2 January 2006" }}{{ end }}
+            {{ if .ReadingTime }} · {{ .ReadingTime }} min read{{ end }}
+        </p>
+    </header>
+    <div class="content__body">
+        {{ .Content }}
+    </div>
+    <footer class="content__footer"></footer>
+{{ end }}
+
+{{define "aside" }}
+    {{ if .Params.description }}<p>{{ .Params.description }}</p>{{ end }}
+    {{ if or (.Params.author) (.Params.date) }}
+        <p>
+            {{ if .Params.author }}By {{ .Params.author }}{{ if .Date }}, {{ end }}{{ end }}
+            {{ if .Date }}{{ .Date.Format "2006-01-02" }}{{ end }}
+            {{ if .ReadingTime }} · {{ .ReadingTime }} min read{{ end }}
+        </p>
+    {{ end }}
+
+    {{ if and (.Params.toc) (.TableOfContents) }}
+	    <hr>
+	    On this page:
+	    {{ .TableOfContents }}
+    {{ end }}
+{{ end }}

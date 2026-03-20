@@ -9,7 +9,7 @@ I've been meaning to put a personal site together for a while. Not anything fanc
 
 ## The stack
 
-The site runs on [Hugo](https://gohugo.io/), a static site generator written in Go. Something you've probably have heard of. I went with Hugo because it's fast, simple, and I'm learning Go anyway so I figured I'd stay in that ecosystem. 
+The site runs on [Hugo](https://gohugo.io/), a static site generator written in Go. Something you've probably heard of before. I went with it because it's fast, simple, and I'm learning Go anyway so I figured I'd stay in that ecosystem. 
 
 The *theme* is [risotto](https://github.com/joeroe/risotto) simply because its clean, text-forward, no distractions. Exactly what I wanted.
 

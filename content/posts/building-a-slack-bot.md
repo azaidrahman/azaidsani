@@ -37,13 +37,14 @@ Writing tests first, then letting AI generate the implementation to pass those t
 
 ## The real insight: deterministic outcomes from generated AI
 
-This led me to a bigger realization. This is a theory but, perhaps the future of AI in software engineering isn't just throwing more AI at things. It's making **deterministic outcomes** from generated AI. That means scripts. Tests. Guardrails that don't care whether a human or a model wrote the code, they just check if it's correct.
+This led me to a bigger realization. This is a theory but, perhaps the future of AI in software engineering isn't just throwing more AI at things. It's making **deterministic outcomes** from generated AI.
 
-I've already been doing this in my day job with Terraform modules and gcloud scripts, wrapping infrastructure changes in predictable, repeatable automation. But superpowers brought that same discipline to application code at a speed I hadn't experienced before. Tests went from something I wrote after the fact to something that drove the entire development loop.
+I've already been doing this on a smaller scale in my day job with Terraform modules and gcloud scripts, wrapping infrastructure changes in predictable, repeatable automation. 
 
-I read [a post today from the OpenClaw creator](https://substack.com/@openclaw/note/c-230139405) that touched on similar ideas. The pattern is showing up everywhere. The leverage we have as humans is the scaffolding around unpredictable outcomes and ultimately decide what is a `reasonable one`.
+But superpowers brought that same discipline to application code at a speed I hadn't experienced before. Tests went from something I wrote after the fact, to something that drove the entire development loop.
+
+I read [a post today from the OpenClaw creator](https://substack.com/@openclaw/note/c-230139405) that touched on similar ideas. The pattern is showing up everywhere. The leverage we have as humans is the scaffolding around unpredictable outcomes and ultimately decide what is a *reasonable one*.
 
 ## Where this goes
 
 The bot is live and handling requests now. It's small, a day and a half of work. But the approach behind it is something I want to keep pushing on. AI that generates code is useful. AI that generates code inside a framework of tests and automation is something else entirely.
-

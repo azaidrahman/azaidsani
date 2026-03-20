@@ -42,6 +42,18 @@ h1:before, h2:before, h3:before, h4:before, h5:before, h6:before {
     color: var(--base0A);
 }
 
+.page__body strong {
+    color: #f07178;
+}
+
+.page__body em {
+    color: var(--base0B);
+}
+
+.page__body code {
+    color: #4E81EE;
+}
+
 .aside__social-links li {
     margin-right: 0.5rem;
 }
@@ -83,6 +95,34 @@ img.about__logo {
 
 .mid-img figcaption {
     text-align: center;
+}
+
+/* Post header — textured banner at top of articles */
+.post-header {
+    background-color: var(--base01);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23ffffff' opacity='0.03'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23ffffff' opacity='0.03'/%3E%3C/svg%3E");
+    padding: 1rem 1.5rem;
+    margin: -2rem -2rem 1.5rem -2rem;
+    border-radius: 4px 4px 0 0;
+    border-bottom: 2px solid var(--base0A);
+}
+
+.post-header__title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.3rem;
+    color: var(--base0A);
+}
+
+.post-header__title::before {
+    content: "# ";
+    color: var(--base0A);
+}
+
+.post-header__meta {
+    margin: 0;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 0.95rem;
+    color: var(--base04);
 }
 
 /* --- Mobile --- */

@@ -1,10 +1,9 @@
 ---
-title: "Home"
+title: "/home/"
 ---
 
-I'm Abdullah Zaid. I am mainly working in DevOps at the moment. Self-taught, employed and mostly finding my way. I care about building products[^1] I understand and not get swallowed up in the AI twister.
+I'm **Abdullah Zaid**. I work in DevOps at the moment. Self-taught, employed and mostly finding my way. I care about building products[^1] that I can understand and trying to not get swallowed up in the AI twister.
 
-This site is mostly a playground for exploring web development, infrastructure, and non-essential CI/CD. I'll update it when I can.
+This site is mostly a playground for exploring web development, infrastructure, and writing. I'll update it when I can.
 
-[^1]: Products is used loosely here, depending on if you enjoy infrastructure
-    adjacent software.
+[^1]: Products is used loosely here, depending on if you think infrastructure is [software](https://www.youtube.com/watch?v=qVEEpUvl0Kw) ?
