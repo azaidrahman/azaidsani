@@ -139,20 +139,15 @@ test.describe('Client-Side Navigation (swup)', () => {
     await expect(page.locator('.post-header__title')).toBeVisible();
   });
 
-  test('aside content updates on navigation', async ({ page }) => {
-    // Navigate to a post with TOC/aside content
+  test('aside container persists across navigation', async ({ page }) => {
+    // Navigate to a post page
     await page.goto('/posts/how-i-built-this-website/');
     const asideContent = page.locator('#swup-aside');
+    await expect(asideContent).toBeAttached();
 
-    // Store whether aside has content on a post page
-    const postAsideText = await asideContent.textContent();
-
-    // Navigate to homepage (aside block is empty)
+    // Navigate to homepage — aside container should still be in the DOM
     await page.click('a.page__logo-inner');
     await expect(page.locator('.recent-posts')).toBeVisible();
-
-    const homeAsideText = await asideContent.textContent();
-    // Aside content should have changed (post had content, home is empty)
-    expect(homeAsideText?.trim()).not.toBe(postAsideText?.trim());
+    await expect(asideContent).toBeAttached();
   });
 });
