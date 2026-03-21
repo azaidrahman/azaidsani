@@ -46,3 +46,9 @@
 {{ end }}
 {{ with .Site.LanguageCode}}<meta property="og:locale" content="{{ . }}" />{{ end }}
 {{ with .Site.Params.about }}<meta property="og:image" content="{{ with .logo_image }}{{ . | absURL }}{{ end }}" />{{ end }}
+
+<!-- swup: client-side navigation -->
+<script defer src="https://unpkg.com/swup@4"></script>
+<script defer src="https://unpkg.com/@swup/head-plugin@2"></script>
+<script defer src="https://unpkg.com/@swup/scripts-plugin@2"></script>
+<script defer src="{{ "js/swup-init.js" | absURL }}"></script>
