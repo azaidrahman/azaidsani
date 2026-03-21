@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "scripts": {
+    "test": "npx playwright test",
+    "test:smoke": "npx playwright test --project=desktop --grep @smoke",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50",
+    "husky": "^9"
+  }
+}
