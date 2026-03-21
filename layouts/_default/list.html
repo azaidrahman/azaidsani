@@ -3,13 +3,64 @@
         <h1 class="post-header__title">{{ .Title | markdownify }}</h1>
     </header>
 
+    <p class="posts-note">i like to start my posts with a movie grab of something i like. enjoy.</p>
+
     {{ .Content }}
 
-    <ul>
-    {{ range .Pages }}
-        {{ .Render "li" }}
-    {{ end }}
-    </ul>
+    <div class="posts-layout">
+        <div class="posts-main">
+            {{ range .Pages.GroupByDate "2006" }}
+            <div class="year-group" id="year-{{ .Key }}">
+                <h2 class="year-heading">{{ .Key }}</h2>
+                {{ range .Pages }}
+                <div class="post-item">
+                    <a class="post-item__title" href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
+                    <span class="post-item__date">{{ .Date.Format "Jan 2" }}</span>
+                </div>
+                {{ end }}
+            </div>
+            {{ end }}
+        </div>
+        <nav class="year-scrubber" aria-label="Jump to year">
+            {{ range .Pages.GroupByDate "2006" }}
+            <a class="scrub-year" href="#year-{{ .Key }}">{{ .Key }}</a>
+            {{ end }}
+        </nav>
+    </div>
+
+    <script>
+    (function() {
+        const groups = document.querySelectorAll('.year-group');
+        const links = document.querySelectorAll('.scrub-year');
+        if (!groups.length) return;
+
+        // Highlight active year on scroll
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) {
+                    const id = e.target.id;
+                    links.forEach(function(l) {
+                        l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+                    });
+                }
+            });
+        }, { threshold: 0.3 });
+
+        groups.forEach(function(g) { observer.observe(g); });
+
+        // Mark first year active on load
+        if (links.length) links[0].classList.add('active');
+
+        // Smooth scroll on click
+        links.forEach(function(l) {
+            l.addEventListener('click', function(e) {
+                e.preventDefault();
+                var target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    })();
+    </script>
 
 {{ end }}
 
