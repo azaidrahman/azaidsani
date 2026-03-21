@@ -8,6 +8,12 @@
     font-size: 1.1rem;
 }
 
+/* Bio text — better readability */
+.page__body > p {
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
 /* Push recent posts to the bottom of the grey body div */
 .page__body {
     display: flex;
@@ -21,6 +27,14 @@
 .recent-posts {
     margin-top: auto;
     font-size: 1.1rem;
+}
+
+.recent-posts__all {
+    display: inline-block;
+    margin-top: 0.6rem;
+    font-family: "Fira Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--base0A);
 }
 
 .about__title {
