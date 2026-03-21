@@ -12,7 +12,7 @@
                 {{- partial "header.html" . -}}
             </header>
 
-            <section class="page__body">
+            <section class="page__body" id="swup-body">
                 {{- block "main" . }}{{- end }}
             </section>
 
@@ -21,7 +21,7 @@
                     {{- partial "about.html" . -}}
                 </div>
                 <hr>
-                <div class="aside__content">
+                <div class="aside__content" id="swup-aside">
                     {{- block "aside" . }}{{- end }}
                 </div>
             </section>
