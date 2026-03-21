@@ -30,7 +30,7 @@ Convert the 2-page PDF to high-resolution PNG images at build/export time. Serve
 ### 1. Pre-rendered page images
 
 - Files: `/static/images/resume-page-1.png`, `/static/images/resume-page-2.png`
-- Export at 2x resolution for crisp display on retina screens
+- Export at ~1700px wide (US Letter at 200 DPI) for crisp display on retina screens
 - Format: PNG (lossless, clean text rendering)
 
 ### 2. Hugo layout: `layouts/resume/list.html`
@@ -61,7 +61,7 @@ Structure:
 </div>
 
 <!-- Download popup -->
-<div class="resume-popup-overlay" id="resume-popup">
+<div class="resume-popup-overlay" id="resume-popup" role="dialog" aria-modal="true" aria-label="Download resume">
   <div class="resume-popup">
     <div class="popup-title">Resume</div>
     <div class="popup-subtitle">Zaid-Resume.pdf</div>
@@ -76,8 +76,14 @@ Structure:
     <button class="popup-close" id="popup-close">esc to close</button>
   </div>
 </div>
+
+<script src="/js/resume-viewer.js"></script>
 {{ end }}
+
+{{ define "aside" }}{{ end }}
 ```
+
+The aside block is intentionally empty — the resume page does not need a sidebar.
 
 ### 3. Styles in `static/css/custom.css`
 
@@ -115,11 +121,10 @@ Simplified to just frontmatter:
 ```yaml
 ---
 title: "Resume"
-layout: "list"
 ---
 ```
 
-The layout template handles all rendering.
+Hugo's template lookup order for a section `_index.md` already resolves to `layouts/resume/list.html` automatically. No explicit `layout` field needed.
 
 ## Files Changed
 
@@ -135,7 +140,7 @@ The layout template handles all rendering.
 ## Resume Update Workflow
 
 When the resume changes:
-1. Export each page as PNG at 2x resolution (e.g., using Preview on macOS: File > Export, 300 DPI)
+1. Export each page as PNG at ~1700px wide (e.g., using Preview on macOS: File > Export as PNG, 200 DPI)
 2. Replace `static/images/resume-page-1.png` and `resume-page-2.png`
 3. Replace `static/Zaid-Resume.pdf` with the updated PDF
 4. Commit and push — Cloudflare Pages auto-deploys
