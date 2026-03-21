@@ -5,15 +5,14 @@ test.describe('Resume Page', () => {
     await page.goto('/resume/');
   });
 
-  test('resume page has embed element', async ({ page }) => {
-    const embed = page.locator('embed[type="application/pdf"]');
-    await expect(embed).toBeAttached();
+  test('resume viewer is present', async ({ page }) => {
+    const viewer = page.locator('.resume-viewer');
+    await expect(viewer).toBeAttached();
   });
 
-  test('embed src points to PDF file', async ({ page }) => {
-    const embed = page.locator('embed[type="application/pdf"]');
-    const src = await embed.getAttribute('src');
-    expect(src).toContain('Zaid-Resume.pdf');
+  test('resume page images are visible', async ({ page }) => {
+    const images = page.locator('.resume-page-img');
+    await expect(images).toHaveCount(2);
   });
 
   test('PDF file is accessible (not 404)', async ({ page }) => {

@@ -1,0 +1,50 @@
+{{ define "main" }}
+    <header class="post-header">
+        <h1 class="post-header__title">{{ .Title | markdownify }}</h1>
+    </header>
+<div class="resume-viewer">
+  <div class="resume-toolbar">
+    <span class="toolbar-title">Zaid-Resume.pdf</span>
+    <div class="toolbar-actions">
+      <button class="toolbar-btn" id="download-btn" type="button">
+        <i class="fa-solid fa-download"></i> Download
+      </button>
+      <a class="toolbar-btn" href="/Zaid-Resume.pdf" target="_blank" rel="noopener">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Open PDF
+      </a>
+    </div>
+  </div>
+  <div class="resume-pages">
+    <img src="/images/resume-page-1.png" alt="Resume page 1" class="resume-page-img" loading="lazy">
+    <div class="page-separator">page 1 of 2</div>
+    <img src="/images/resume-page-2.png" alt="Resume page 2" class="resume-page-img" loading="lazy">
+    <div class="page-separator">page 2 of 2</div>
+  </div>
+</div>
+
+<!-- Download popup -->
+<div class="resume-popup-overlay" id="resume-popup" role="dialog" aria-modal="true" aria-label="Download resume">
+  <div class="resume-popup">
+    <div class="popup-title">Resume</div>
+    <div class="popup-subtitle">Zaid-Resume.pdf</div>
+    <div class="popup-actions">
+      <a class="popup-btn popup-btn-primary" href="/Zaid-Resume.pdf" download>
+        <i class="fa-solid fa-download"></i> Download PDF
+      </a>
+      <a class="popup-btn popup-btn-secondary" href="/Zaid-Resume.pdf" target="_blank" rel="noopener">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Open in New Tab
+      </a>
+    </div>
+    <button class="popup-close" id="popup-close" type="button">esc to close</button>
+  </div>
+</div>
+
+<!-- Zoom overlay -->
+<div class="resume-zoom-overlay" id="resume-zoom">
+  <img id="resume-zoom-img" src="" alt="Zoomed resume page">
+</div>
+
+<script src="/js/resume-viewer.js"></script>
+{{ end }}
+
+{{ define "aside" }}{{ end }}
