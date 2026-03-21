@@ -551,3 +551,13 @@ img {
 .resume-zoom-overlay img:active {
     cursor: grabbing;
 }
+
+/* --- Footer --- */
+
+.page__footer {
+    padding: 1rem 2rem;
+    font-family: "Fira Mono", monospace;
+    font-size: 0.75rem;
+    color: var(--base04);
+    text-align: center;
+}
