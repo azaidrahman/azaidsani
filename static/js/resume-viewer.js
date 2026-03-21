@@ -20,16 +20,6 @@
     }
   });
 
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      if (zoomOverlay.classList.contains("active")) {
-        closeZoom();
-      } else if (overlay.style.display === "flex") {
-        closePopup();
-      }
-    }
-  });
-
   // --- Click-to-zoom (desktop only) ---
   var zoomOverlay = document.getElementById("resume-zoom");
   var zoomImg = document.getElementById("resume-zoom-img");
@@ -40,7 +30,6 @@
     zoomImg.alt = alt;
     zoomOverlay.classList.add("active");
     document.body.style.overflow = "hidden";
-    // Center scroll after image loads
     zoomImg.onload = function () {
       zoomOverlay.scrollLeft = (zoomOverlay.scrollWidth - zoomOverlay.clientWidth) / 2;
       zoomOverlay.scrollTop = 0;
@@ -69,4 +58,21 @@
   zoomOverlay.addEventListener("mouseup", function (e) {
     if (!didDrag) closeZoom();
   });
+
+  // Remove previous keydown handler if it exists (prevents leak on swup re-execution)
+  if (window._resumeKeydown) {
+    document.removeEventListener("keydown", window._resumeKeydown);
+  }
+
+  window._resumeKeydown = function (e) {
+    if (e.key === "Escape") {
+      if (zoomOverlay.classList.contains("active")) {
+        closeZoom();
+      } else if (overlay.style.display === "flex") {
+        closePopup();
+      }
+    }
+  };
+
+  document.addEventListener("keydown", window._resumeKeydown);
 })();
