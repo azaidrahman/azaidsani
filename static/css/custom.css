@@ -378,7 +378,7 @@ img {
 .toolbar-title {
     font-family: "Fira Mono", monospace;
     font-size: 0.85rem;
-    color: var(--base03);
+    color: var(--base04);
 }
 
 .toolbar-btn {
@@ -425,7 +425,7 @@ img {
 .page-separator {
     font-family: "Fira Mono", monospace;
     font-size: 0.7rem;
-    color: var(--base03);
+    color: var(--base04);
     text-align: center;
     padding: 0.5rem 0;
 }
@@ -508,7 +508,7 @@ img {
 .popup-close {
     margin-top: 0.8rem;
     font-size: 0.75rem;
-    color: var(--base03);
+    color: var(--base04);
     cursor: pointer;
     background: none;
     border: none;
