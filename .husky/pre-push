@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+echo "Running pre-push checks..."
+
+# 1. Hugo build check
+echo "Checking Hugo build..."
+hugo --minify || exit 1
+
+# 2. Fast smoke tests (desktop only, @smoke tagged)
+echo "Running smoke tests..."
+npx playwright test --project=desktop --grep @smoke || exit 1
+
+echo "Pre-push checks passed."
