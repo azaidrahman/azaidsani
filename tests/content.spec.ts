@@ -19,7 +19,7 @@ test.describe('Content Integrity', () => {
   test('posts page loads and lists blog entries', async ({ page }) => {
     const response = await page.goto('/posts/');
     expect(response?.status()).toBe(200);
-    const entries = page.locator('.page__body ul li a');
+    const entries = page.locator('.post-item__title');
     const count = await entries.count();
     expect(count).toBeGreaterThan(0);
   });

@@ -38,8 +38,24 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--base0A);
 }
 
-h1:before, h2:before, h3:before, h4:before, h5:before, h6:before {
-    color: var(--base0A);
+/* Readable sans-serif headings inside post content */
+.content__body h1,
+.content__body h2,
+.content__body h3,
+.content__body h4,
+.content__body h5,
+.content__body h6 {
+    font-family: "Source Sans Pro", sans-serif;
+}
+
+/* Remove # prefixes from headings in post content */
+.content__body h1:before,
+.content__body h2:before,
+.content__body h3:before,
+.content__body h4:before,
+.content__body h5:before,
+.content__body h6:before {
+    content: none;
 }
 
 .page__body strong {
@@ -151,6 +167,100 @@ img.about__logo {
     font-family: "Source Sans Pro", sans-serif;
     font-size: 0.95rem;
     color: var(--base04);
+}
+
+/* Posts note under header */
+.posts-note {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 0.9rem;
+    color: var(--base04);
+    font-style: italic;
+    margin: 0 0 1.2rem 0;
+}
+
+/* --- Posts List --- */
+
+.posts-layout {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.posts-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.year-group + .year-group {
+    margin-top: 1.2rem;
+}
+
+.year-heading {
+    font-size: 0.85rem;
+    color: var(--base04);
+    margin: 0 0 0.5rem 0;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--base02);
+}
+
+.year-heading::before {
+    content: none;
+}
+
+.post-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+}
+
+.post-item__title {
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.post-item__date {
+    font-size: 0.75rem;
+    color: var(--base04);
+    white-space: nowrap;
+    margin-left: 1rem;
+}
+
+.year-scrubber {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    padding-top: 0.2rem;
+    position: sticky;
+    top: 1rem;
+    align-self: flex-start;
+}
+
+.scrub-year {
+    font-family: "Fira Mono", monospace;
+    font-size: 0.7rem;
+    color: var(--base04);
+    padding: 0.3rem 0.5rem;
+    cursor: pointer;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: color 0.15s, background 0.15s;
+}
+
+.scrub-year:hover {
+    color: var(--base05);
+}
+
+.scrub-year.active {
+    color: var(--base0A);
+    background: var(--base01);
+}
+
+/* Hide scrubber on mobile — not enough room */
+@media (max-width: 45rem) {
+    .year-scrubber {
+        display: none;
+    }
 }
 
 /* --- Activity Calendar --- */
