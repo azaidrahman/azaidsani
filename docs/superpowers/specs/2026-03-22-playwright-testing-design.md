@@ -21,7 +21,6 @@ tests/
   content.spec.ts               # Pages load, links work, images render
   responsiveness.spec.ts        # Layout checks at mobile/tablet/desktop
   calendar.spec.ts              # Activity calendar renders, nav works
-  animation.spec.ts             # Terminal animation elements present
   resume.spec.ts                # PDF embed loads on resume page
 .github/
   workflows/
@@ -48,31 +47,34 @@ tests/
 ### content.spec.ts
 
 - Homepage (`/`) loads with 200 status
-- Posts page (`/posts/`) loads and lists blog entries
+- Homepage contains `.recent-posts` section with up to 3 listed posts
+- Posts page (`/posts/`) loads and lists blog entries (via `.page__body ul li a`)
 - Each blog post page loads with title and content present
+- Blog posts with shortcodes render `<figure class="movies">` or `<figure class="mid-img">` correctly
 - Resume page (`/resume/`) loads
 - All `<img>` tags have valid `src` attributes that resolve (not 404)
 - All internal `<a>` links return 200
-- Social links (GitHub, LinkedIn, Letterboxd) are present in sidebar
+- Social links (GitHub, LinkedIn, Letterboxd) are present in `.aside__social-links`
 
 ### responsiveness.spec.ts
 
-- **Mobile:** sidebar is hidden on non-homepage pages, content fills width
-- **Tablet/Desktop:** sidebar is visible, layout is side-by-side
+Selectors: `.page__aside` for sidebar, `body.not-home` for non-homepage pages.
+
+- **Mobile (375px):** Navigate to `/posts/`; assert `.page__aside` is not visible (`display: none` via `.not-home .page__aside` rule)
+- **Mobile (375px):** Navigate to `/`; assert `.page__aside` is still visible on homepage
+- **Tablet/Desktop:** `.page__aside` is visible on all pages, layout is side-by-side
 - Images respect `max-width: 100%` and don't overflow their container
-- Activity calendar grid doesn't overflow on mobile
+- Activity calendar `#acal-grid` doesn't overflow on mobile
 
 ### calendar.spec.ts
 
-- Calendar container renders on homepage
-- Day cells are present (grid with 7-column structure)
-- Previous/next month navigation buttons work (click and verify month label changes)
-- Legend is visible with correct entries
+Selectors: `#acal-grid`, `#acal-prev`, `#acal-next`, `#acal-label`, `.acal-legend`, `.acal-cell`, `.acal-dow`.
 
-### animation.spec.ts
-
-- Terminal text element exists in sidebar
-- Blinking cursor element is present
+- Calendar container `#acal-grid` renders on homepage
+- `#acal-grid` contains exactly 7 `.acal-dow` header elements (day-of-week labels)
+- `.acal-cell` day elements are present
+- `#acal-prev` / `#acal-next` buttons work (click and verify `#acal-label` text changes)
+- `.acal-legend` is visible with correct entries
 
 ### resume.spec.ts
 
@@ -99,7 +101,7 @@ If either step fails, the push is blocked.
 **Triggers:** `push` (all branches), `pull_request` (to `main`)
 
 **Steps:**
-1. Checkout code (with submodules for Hugo theme)
+1. Checkout code with `submodules: recursive` (required for Hugo theme)
 2. Install Hugo (extended edition)
 3. Install Node.js and dependencies (`npm ci`)
 4. Install Playwright browsers (`npx playwright install --with-deps chromium`)
