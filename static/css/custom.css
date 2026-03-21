@@ -518,3 +518,36 @@ img {
 .popup-close:hover {
     color: var(--base05);
 }
+
+/* --- Resume Image Zoom (desktop only) --- */
+
+@media (hover: hover) and (pointer: fine) {
+    .resume-page-img {
+        cursor: zoom-in;
+    }
+}
+
+.resume-zoom-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 90;
+    overflow: auto;
+    cursor: grab;
+}
+
+.resume-zoom-overlay.active {
+    display: block;
+}
+
+.resume-zoom-overlay img {
+    display: block;
+    width: 1400px;
+    margin: 2rem auto;
+    cursor: grab;
+}
+
+.resume-zoom-overlay img:active {
+    cursor: grabbing;
+}
