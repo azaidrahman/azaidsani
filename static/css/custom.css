@@ -125,6 +125,177 @@ img.about__logo {
     color: var(--base04);
 }
 
+/* --- Activity Calendar --- */
+
+.acal-title {
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--border, #e0e0e0);
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+}
+
+.acal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+}
+
+.acal-month-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.acal-arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0 0.4rem;
+    color: inherit;
+    line-height: 1;
+}
+
+.acal-arrow:hover {
+    opacity: 0.6;
+}
+
+.acal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+}
+
+.acal-dow {
+    font-size: 0.55rem;
+    text-align: center;
+    opacity: 0.5;
+    padding: 1px 0;
+}
+
+.acal-cell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1;
+    font-size: 0.65rem;
+}
+
+.acal-num {
+    position: relative;
+    z-index: 1;
+}
+
+.acal-cell .git-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(46, 160, 67, 0.18);
+    border: 1.5px solid rgba(46, 160, 67, 0.55);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.acal-cell .post-dot {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #3b82f6;
+}
+
+.acal-legend {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 0.3rem;
+    font-size: 0.6rem;
+    opacity: 0.6;
+}
+
+.acal-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.acal-legend-git {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(46, 160, 67, 0.18);
+    border: 1.5px solid rgba(46, 160, 67, 0.55);
+}
+
+.acal-legend-post {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #3b82f6;
+}
+
+/* --- Terminal Animation --- */
+
+.terminal-row {
+    color: #4af626;
+    font-family: monospace;
+    line-height: 1.4;
+}
+
+.terminal-row .command {
+    opacity: 0.7;
+}
+
+.terminal-output {
+    display: inline-block;
+    position: relative;
+    min-width: 18ch;
+    height: 1.4em;
+    vertical-align: bottom;
+}
+
+.terminal-output span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    animation: cycle 10s infinite;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+.terminal-output span:nth-child(1) { animation-delay: 0s; }
+.terminal-output span:nth-child(2) { animation-delay: 2s; }
+.terminal-output span:nth-child(3) { animation-delay: 4s; }
+.terminal-output span:nth-child(4) { animation-delay: 6s; }
+.terminal-output span:nth-child(5) { animation-delay: 8s; }
+
+@keyframes cycle {
+    0%   { opacity: 0; }
+    2%   { opacity: 1; }
+    16%  { opacity: 1; }
+    20%  { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+.terminal-output span::after {
+    content: "\2588";
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0; }
+}
+
 /* --- Mobile --- */
 
 /* Prevent images from overflowing on small screens */
