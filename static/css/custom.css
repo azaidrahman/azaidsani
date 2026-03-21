@@ -58,6 +58,34 @@ h1:before, h2:before, h3:before, h4:before, h5:before, h6:before {
     margin-right: 0.5rem;
 }
 
+.email-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.email-copy-btn {
+    background: none;
+    border: 1px solid var(--base03, #555);
+    border-radius: 3px;
+    cursor: pointer;
+    color: inherit;
+    font-size: 0.75rem;
+    padding: 2px 5px;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.2s, color 0.2s;
+}
+
+.email-copy-btn:hover {
+    opacity: 1;
+}
+
+.email-copy-btn.copied {
+    color: #2ea043;
+    opacity: 1;
+}
+
 img.about__logo {
     display: block;
     width: 100%;

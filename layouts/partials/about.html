@@ -12,7 +12,29 @@
         <a href="{{ $item.url }}" rel="me" aria-label="{{ $item.title }}" title="{{ $item.title }}"><i class="{{ $item.icon }}" aria-hidden="true"></i> {{ $item.title }}</a>
     </li>
     {{ end }}
+    {{ with .Site.Params.about.email }}
+    <li class="email-link">
+        <a href="mailto:{{ . }}" aria-label="Email" title="Send email"><i class="fa-solid fa-envelope" aria-hidden="true"></i> {{ . }}</a>
+        <button class="email-copy-btn" data-email="{{ . }}" aria-label="Copy email" title="Copy email">
+            <i class="fa-regular fa-copy"></i>
+        </button>
+    </li>
+    {{ end }}
 </ul>
+<script>
+document.querySelector('.email-copy-btn')?.addEventListener('click', function() {
+    var btn = this;
+    var icon = btn.querySelector('i');
+    navigator.clipboard.writeText(btn.dataset.email).then(function() {
+        btn.classList.add('copied');
+        icon.className = 'fa-solid fa-check';
+        setTimeout(function() {
+            btn.classList.remove('copied');
+            icon.className = 'fa-regular fa-copy';
+        }, 1500);
+    });
+});
+</script>
 
 <!-- Activity Calendar -->
 <h2 class="acal-title">Activity Calendar</h2>

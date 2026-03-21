@@ -9,6 +9,7 @@ sectionPagesMenu = "main"
   title = "Zaid"
   description = "Software engineer. I like movies too!"
   logo_image = "/zaid.jpeg"
+  email = "azaidrahman@gmail.com"
 
 [[params.socialLinks]]
   icon = "fa-brands fa-github"
