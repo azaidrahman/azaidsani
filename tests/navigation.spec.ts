@@ -57,8 +57,9 @@ test.describe('Client-Side Navigation (swup)', () => {
     await page.click('a[href$="/posts/"]');
     await expect(page.locator('.post-header__title')).toBeVisible();
 
-    // Calendar should still be visible and unchanged (persistent zone)
-    await expect(calGrid).toBeVisible();
+    // Calendar should still be in DOM and unchanged (persistent zone)
+    // Note: on mobile, sidebar is hidden on non-home pages via CSS, so check attached not visible
+    await expect(calGrid).toBeAttached();
     const afterNavLabel = await page.locator('#acal-label').textContent();
     expect(afterNavLabel).toBe(initialLabel);
   });
