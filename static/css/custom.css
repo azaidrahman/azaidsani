@@ -346,4 +346,175 @@ img {
     .not-home .page__aside {
         display: none;
     }
+
+    .resume-toolbar {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .resume-pages {
+        padding: 1rem;
+    }
+}
+
+/* --- Resume Viewer --- */
+
+.resume-viewer {
+    background: var(--off-bg);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.resume-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    background: var(--base01);
+    border-bottom: 1px solid var(--base02);
+}
+
+.toolbar-title {
+    font-family: "Fira Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--base03);
+}
+
+.toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--base02);
+    border: 1px solid var(--base03);
+    border-radius: 3px;
+    color: var(--base05);
+    font-family: "Fira Mono", monospace;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+    text-decoration: none;
+}
+
+.toolbar-btn:hover {
+    background: var(--base03);
+    color: var(--base07);
+}
+
+.toolbar-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.resume-pages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    gap: 0.5rem;
+}
+
+.resume-page-img {
+    width: 100%;
+    max-width: 680px;
+    border-radius: 2px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.page-separator {
+    font-family: "Fira Mono", monospace;
+    font-size: 0.7rem;
+    color: var(--base03);
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+/* --- Resume Download Popup --- */
+
+.resume-popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+}
+
+.resume-popup {
+    background: var(--base01);
+    border: 1px solid var(--base02);
+    border-radius: 6px;
+    padding: 1.5rem 2rem;
+    max-width: 360px;
+    width: 90%;
+    text-align: center;
+}
+
+.popup-title {
+    font-family: "Fira Mono", monospace;
+    font-size: 1rem;
+    color: var(--base0A);
+    margin-bottom: 0.5rem;
+}
+
+.popup-subtitle {
+    font-size: 0.85rem;
+    color: var(--base04);
+    margin-bottom: 1.2rem;
+}
+
+.popup-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.popup-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    font-family: "Fira Mono", monospace;
+    font-size: 0.82rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s ease, filter 0.15s ease;
+    border: none;
+}
+
+.popup-btn-primary {
+    background: var(--base0A);
+    color: var(--base00);
+}
+
+.popup-btn-primary:hover {
+    filter: brightness(1.1);
+}
+
+.popup-btn-secondary {
+    background: var(--base02);
+    color: var(--base05);
+    border: 1px solid var(--base03);
+}
+
+.popup-btn-secondary:hover {
+    background: var(--base03);
+}
+
+.popup-close {
+    margin-top: 0.8rem;
+    font-size: 0.75rem;
+    color: var(--base03);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: "Fira Mono", monospace;
+}
+
+.popup-close:hover {
+    color: var(--base05);
 }
