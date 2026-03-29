@@ -86,6 +86,28 @@
     </div>
 </div>
 
+<!-- Image zoom overlay -->
+<div id="zoom-overlay" style="display:none;">
+    <img id="zoom-img" src="" alt="Zoomed">
+</div>
+<script>
+(function() {
+    var overlay = document.getElementById('zoom-overlay');
+    var zoomImg = document.getElementById('zoom-img');
+
+    document.querySelector('.preview-panel').addEventListener('click', function(e) {
+        var img = e.target.closest('.preview-content img');
+        if (!img) return;
+        zoomImg.src = img.src;
+        overlay.style.display = 'flex';
+    });
+
+    overlay.addEventListener('click', function() {
+        overlay.style.display = 'none';
+    });
+})();
+</script>
+
 <script src="/static/tag-input.js"></script>
 <script src="/static/drag-drop.js"></script>
 {{end}}
