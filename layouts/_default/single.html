@@ -5,6 +5,13 @@
             {{ if .Date }}{{ .Date.Format "2 January 2006" }}{{ end }}
             {{ if .ReadingTime }} · {{ .ReadingTime }} min read{{ end }}
         </p>
+        {{ with .Params.tags }}
+        <div class="post-header__tags">
+            {{ range . }}
+            <a href="/tags/{{ . | urlize }}/" class="tag-pill">{{ . }}</a>
+            {{ end }}
+        </div>
+        {{ end }}
     </header>
     <div class="content__body">
         {{ .Content }}

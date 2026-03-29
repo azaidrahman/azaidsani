@@ -685,3 +685,82 @@ img {
     color: var(--base04);
     text-align: center;
 }
+
+/* Tag pills — shared style for sidebar, posts, and /tags page */
+.tag-pill {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.1rem 0.45rem;
+    border: 1px solid var(--base03);
+    border-radius: 3px;
+    color: var(--base0);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.tag-pill:hover {
+    border-color: var(--base0A);
+    color: var(--base0A);
+}
+
+.tag-pill .tag-count {
+    font-size: 0.65rem;
+    color: var(--base01);
+}
+
+.tag-pill.small {
+    font-size: 0.7rem;
+    padding: 0.05rem 0.35rem;
+}
+
+/* Sidebar tags section */
+.sidebar-tags {
+    margin-top: 1rem;
+}
+
+.sidebar-tags__title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--base01);
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-tags__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+/* /tags page */
+.tag-page {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+/* /tags/{tag} post list */
+.term-posts {
+    margin-top: 1rem;
+}
+
+.term-post-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.3rem 0;
+}
+
+.term-post-item time {
+    color: var(--base01);
+    font-size: 0.85rem;
+    min-width: 6rem;
+}
+
+/* Post header tags */
+.post-header__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+}
