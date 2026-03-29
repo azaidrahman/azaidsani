@@ -1,0 +1,84 @@
+{{define "content"}}
+<div class="companion">
+    <div class="companion-header">
+        <h1>{{.Post.Title}}</h1>
+        <a href="/" class="back-link">Back to posts</a>
+    </div>
+
+    <form class="frontmatter-form" hx-post="/api/posts/{{.Post.Filename}}/frontmatter" hx-swap="none">
+        <div class="form-row">
+            <label>Title</label>
+            <input type="text" name="title" value="{{.Post.Title}}">
+        </div>
+        <div class="form-row">
+            <label>Date</label>
+            <input type="date" name="date" value="{{.Post.Date.Format "2006-01-02"}}">
+        </div>
+        <div class="form-row">
+            <label>Draft</label>
+            <input type="checkbox" name="draft" {{if .Post.Draft}}checked{{end}}>
+        </div>
+        <div class="form-row">
+            <label>Tags</label>
+            <div class="tag-editor">
+                <div class="current-tags" id="current-tags">
+                    {{range .Post.Tags}}
+                    <span class="pill editable" data-tag="{{.}}">
+                        {{.}}
+                        <input type="hidden" name="tags" value="{{.}}">
+                        <button type="button" class="remove-tag" onclick="this.parentElement.remove()">x</button>
+                    </span>
+                    {{end}}
+                </div>
+                <input type="text" id="tag-input" placeholder="Add tag..."
+                       hx-get="/api/tags/search"
+                       hx-trigger="keyup changed delay:200ms"
+                       hx-target="#tag-dropdown"
+                       hx-include="[name='q']"
+                       name="q"
+                       autocomplete="off">
+                <div id="tag-dropdown"></div>
+            </div>
+        </div>
+        <div class="form-row"
+             hx-get="/api/posts/{{.Post.Filename}}/tag-suggestions"
+             hx-trigger="load"
+             hx-target="#tag-suggestions">
+            <label>Suggested</label>
+            <div id="tag-suggestions"></div>
+        </div>
+        <button type="submit" class="save-btn">Save Frontmatter</button>
+    </form>
+
+    <div class="drop-zone" id="drop-zone">
+        Drop images here or click to upload
+        <input type="file" id="image-input" accept="image/*" hidden>
+    </div>
+
+    <div class="image-modal" id="image-modal" style="display:none;">
+        <div class="modal-content">
+            <img id="modal-preview" src="" alt="Preview">
+            <div class="modal-controls">
+                <label>Type</label>
+                <select id="shortcode-type">
+                    <option value="movies">movies (full-width)</option>
+                    <option value="mid-img">mid-img (centered)</option>
+                </select>
+                <label>Caption</label>
+                <input type="text" id="caption-input" placeholder="Image caption...">
+                <button id="copy-shortcode">Copy to Clipboard</button>
+                <button id="close-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-panel"
+         hx-get="/api/posts/{{.Post.Filename}}/preview"
+         hx-trigger="every 1s"
+         hx-swap="innerHTML">
+        {{template "preview" .PreviewHTML}}
+    </div>
+</div>
+
+<script src="/static/drag-drop.js"></script>
+{{end}}

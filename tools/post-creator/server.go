@@ -1,11 +1,15 @@
 package main
 
 import (
+	"crypto/md5"
 	"embed"
+	"fmt"
 	"html/template"
 	"io/fs"
 	"net/http"
+	"os"
 	"path/filepath"
+	"time"
 
 	"post-creator/models"
 )
@@ -100,9 +104,95 @@ func (s *Server) PostList(w http.ResponseWriter, r *http.Request) {
 		s.Templates.ExecuteTemplate(w, "layout.html", data)
 	}
 }
-func (s *Server) PostDetail(w http.ResponseWriter, r *http.Request)        {}
-func (s *Server) Preview(w http.ResponseWriter, r *http.Request)           {}
-func (s *Server) UpdateFrontmatter(w http.ResponseWriter, r *http.Request) {}
+func (s *Server) PostDetail(w http.ResponseWriter, r *http.Request) {
+	filename := r.PathValue("filename")
+	postPath := filepath.Join(s.ProjectRoot, "content", "posts", filename)
+
+	post, err := models.ParsePost(postPath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	previewHTML, err := models.RenderPreview(post.Body)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	data := struct {
+		Post        models.Post
+		PreviewHTML template.HTML
+	}{post, template.HTML(previewHTML)}
+
+	s.Templates.ExecuteTemplate(w, "layout.html", data)
+}
+func (s *Server) Preview(w http.ResponseWriter, r *http.Request) {
+	filename := r.PathValue("filename")
+	postPath := filepath.Join(s.ProjectRoot, "content", "posts", filename)
+
+	data, err := os.ReadFile(postPath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	hash := fmt.Sprintf("%x", md5.Sum(data))
+	if r.Header.Get("If-None-Match") == hash {
+		w.WriteHeader(http.StatusNotModified)
+		return
+	}
+
+	post, err := models.ParsePost(postPath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	previewHTML, err := models.RenderPreview(post.Body)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("ETag", hash)
+	s.Templates.ExecuteTemplate(w, "preview", template.HTML(previewHTML))
+}
+func (s *Server) UpdateFrontmatter(w http.ResponseWriter, r *http.Request) {
+	filename := r.PathValue("filename")
+	postPath := filepath.Join(s.ProjectRoot, "content", "posts", filename)
+
+	post, err := models.ParsePost(postPath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	post.Title = r.FormValue("title")
+	dateStr := r.FormValue("date")
+	if dateStr != "" {
+		if parsed, err := time.Parse("2006-01-02", dateStr); err == nil {
+			post.Date = parsed
+		}
+	}
+	post.Draft = r.FormValue("draft") == "on"
+	post.Tags = r.Form["tags"]
+	if post.Tags == nil {
+		post.Tags = []string{}
+	}
+
+	if err := models.WriteFrontmatter(postPath, post); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
 func (s *Server) CreatePost(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -124,8 +214,45 @@ func (s *Server) CreatePost(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/posts/"+filename, http.StatusSeeOther)
 }
-func (s *Server) TagSearch(w http.ResponseWriter, r *http.Request)         {}
-func (s *Server) TagSuggestions(w http.ResponseWriter, r *http.Request)    {}
+func (s *Server) TagSearch(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("q")
+	if query == "" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	postsDir := filepath.Join(s.ProjectRoot, "content", "posts")
+	posts, err := models.ParseAllPosts(postsDir)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	allTags := models.CollectAllTags(posts)
+	results := models.SearchTags(allTags, query)
+
+	s.Templates.ExecuteTemplate(w, "tag-search", results)
+}
+func (s *Server) TagSuggestions(w http.ResponseWriter, r *http.Request) {
+	filename := r.PathValue("filename")
+	postPath := filepath.Join(s.ProjectRoot, "content", "posts", filename)
+
+	post, err := models.ParsePost(postPath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	postsDir := filepath.Join(s.ProjectRoot, "content", "posts")
+	allPosts, err := models.ParseAllPosts(postsDir)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	suggestions := models.SuggestTags(post, allPosts, 5)
+	s.Templates.ExecuteTemplate(w, "tag-suggest", suggestions)
+}
 func (s *Server) TagDashboard(w http.ResponseWriter, r *http.Request)      {}
 func (s *Server) RenameTag(w http.ResponseWriter, r *http.Request)         {}
 func (s *Server) MergeTags(w http.ResponseWriter, r *http.Request)         {}
