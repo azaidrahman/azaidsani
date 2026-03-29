@@ -1,15 +1,16 @@
 {{define "post-filter"}}
 <div class="tag-filter">
+    {{$active := .ActiveTags}}
     {{range .AllTags}}
-    <button class="pill {{if eq .Name $.ActiveTag}}active{{end}}"
-            hx-get="/?tag={{.Name}}"
+    <button class="pill {{if hasTag $active .Name}}active{{end}}"
+            hx-get="{{toggleTagURL $active .Name}}"
             hx-target="#post-list"
             hx-swap="innerHTML"
             hx-push-url="true">
         {{.Name}} <span class="count">{{.Count}}</span>
     </button>
     {{end}}
-    {{if .ActiveTag}}
+    {{if .ActiveTags}}
     <button class="pill clear" hx-get="/" hx-target="#post-list" hx-swap="innerHTML" hx-push-url="true">
         clear
     </button>
