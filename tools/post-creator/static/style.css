@@ -244,6 +244,8 @@ input[type="date"]:focus {
     margin-top: 0.5rem;
 }
 .save-btn:hover { background: var(--base0A); color: var(--base00); }
+.save-btn.saved { border-color: var(--base0B); color: var(--base0B); }
+.save-btn.error { border-color: var(--base08); color: var(--base08); }
 
 /* Tag input component */
 .tag-input-wrap {

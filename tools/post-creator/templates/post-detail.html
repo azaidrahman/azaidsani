@@ -33,8 +33,28 @@
             <label>Suggested</label>
             <div id="tag-suggestions"></div>
         </div>
-        <button type="submit" class="save-btn">Save Frontmatter</button>
+        <button type="submit" class="save-btn" id="save-btn">Save Frontmatter</button>
     </form>
+    <script>
+    document.querySelector('.frontmatter-form').addEventListener('htmx:afterRequest', function(e) {
+        var btn = document.getElementById('save-btn');
+        if (e.detail.successful) {
+            btn.textContent = 'Saved';
+            btn.classList.add('saved');
+            setTimeout(function() {
+                btn.textContent = 'Save Frontmatter';
+                btn.classList.remove('saved');
+            }, 1500);
+        } else {
+            btn.textContent = 'Error';
+            btn.classList.add('error');
+            setTimeout(function() {
+                btn.textContent = 'Save Frontmatter';
+                btn.classList.remove('error');
+            }, 2000);
+        }
+    });
+    </script>
 
     <div class="drop-zone" id="drop-zone">
         Drop images here or click to upload
