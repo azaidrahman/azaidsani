@@ -1,6 +1,8 @@
 package models
 
 import (
+	"os"
+	"path/filepath"
 	"slices"
 	"testing"
 	"time"
@@ -100,4 +102,92 @@ func containsSubstring(s, substr string) bool {
 		}
 	}
 	return false
+}
+
+func TestSlugify(t *testing.T) {
+	tests := []struct {
+		input string
+		want  string
+	}{
+		{"My Cool Post", "my-cool-post"},
+		{"Hello, World!", "hello-world"},
+		{"  spaces  everywhere  ", "spaces-everywhere"},
+		{"Already-Slugged", "already-slugged"},
+		{"UPPER CASE", "upper-case"},
+		{"special!@#chars$%^", "specialchars"},
+		{"multiple---hyphens", "multiple-hyphens"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.input, func(t *testing.T) {
+			got := Slugify(tt.input)
+			if got != tt.want {
+				t.Errorf("Slugify(%q) = %q, want %q", tt.input, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestWriteFrontmatter_PreservesBody(t *testing.T) {
+	tmpDir := t.TempDir()
+	src := "../testdata/content/posts/test-post-one.md"
+	srcBytes, _ := os.ReadFile(src)
+	tmpFile := filepath.Join(tmpDir, "test-post-one.md")
+	os.WriteFile(tmpFile, srcBytes, 0644)
+
+	post, _ := ParsePost(tmpFile)
+	post.Tags = []string{"go", "testing", "new-tag"}
+	post.Title = "Updated Title"
+
+	err := WriteFrontmatter(tmpFile, post)
+	if err != nil {
+		t.Fatalf("WriteFrontmatter error: %v", err)
+	}
+
+	updated, err := ParsePost(tmpFile)
+	if err != nil {
+		t.Fatalf("ParsePost after write error: %v", err)
+	}
+	if updated.Title != "Updated Title" {
+		t.Errorf("Title = %q, want 'Updated Title'", updated.Title)
+	}
+	if !slices.Equal(updated.Tags, []string{"go", "testing", "new-tag"}) {
+		t.Errorf("Tags = %v, want [go testing new-tag]", updated.Tags)
+	}
+	if !containsSubstring(updated.Body, "body of test post one") {
+		t.Errorf("Body was modified: %q", updated.Body)
+	}
+	if !containsSubstring(updated.Body, "movies") {
+		t.Errorf("Body lost shortcode content: %q", updated.Body)
+	}
+}
+
+func TestCreatePost(t *testing.T) {
+	tmpDir := t.TempDir()
+	filename, err := CreatePost(tmpDir, "My New Post")
+	if err != nil {
+		t.Fatalf("CreatePost error: %v", err)
+	}
+	if filename != "my-new-post.md" {
+		t.Errorf("filename = %q, want 'my-new-post.md'", filename)
+	}
+
+	post, err := ParsePost(filepath.Join(tmpDir, filename))
+	if err != nil {
+		t.Fatalf("ParsePost on new file error: %v", err)
+	}
+	if post.Title != "My New Post" {
+		t.Errorf("Title = %q, want 'My New Post'", post.Title)
+	}
+	if !post.Draft {
+		t.Error("new post should be draft=true")
+	}
+}
+
+func TestCreatePost_DuplicateFilename(t *testing.T) {
+	tmpDir := t.TempDir()
+	CreatePost(tmpDir, "Duplicate")
+	_, err := CreatePost(tmpDir, "Duplicate")
+	if err == nil {
+		t.Error("expected error for duplicate filename, got nil")
+	}
 }
