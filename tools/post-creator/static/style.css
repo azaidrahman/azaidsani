@@ -170,6 +170,18 @@ h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--bas
 .badge.draft { background: var(--base02); color: var(--base09); }
 .badge.published { background: var(--base02); color: var(--base0B); }
 
+.btn-delete {
+    font-family: 'Fira Mono', monospace;
+    font-size: 0.7rem;
+    background: none;
+    border: 1px solid var(--base02);
+    border-radius: 2px;
+    color: var(--base03);
+    cursor: pointer;
+    padding: 0.1rem 0.35rem;
+}
+.btn-delete:hover { border-color: var(--base08); color: var(--base08); }
+
 /* Form controls */
 .form-row {
     display: flex;
@@ -233,13 +245,25 @@ input[type="date"]:focus {
 }
 .save-btn:hover { background: var(--base0A); color: var(--base00); }
 
-/* Tag editor */
-.tag-editor { flex: 1; position: relative; }
-.current-tags, #new-post-tags {
+/* Tag input component */
+.tag-input-wrap {
+    flex: 1;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 0.25rem;
-    margin-bottom: 0.35rem;
+    background: var(--base00);
+    border: 1px solid var(--base02);
+    border-radius: 3px;
+    padding: 0.25rem 0.4rem;
+    cursor: text;
+    position: relative;
+}
+.tag-input-wrap:focus-within {
+    border-color: var(--base0A);
+}
+.tag-pills {
+    display: contents;
 }
 .pill.editable { cursor: default; }
 .remove-tag {
@@ -248,31 +272,51 @@ input[type="date"]:focus {
     color: var(--base08);
     cursor: pointer;
     font-size: 0.65rem;
-    margin-left: 0.15rem;
+    margin-left: 0.2rem;
     padding: 0;
     font-family: 'Fira Mono', monospace;
 }
-#tag-input {
-    width: 100%;
-}
-#tag-dropdown {
-    position: absolute;
-    z-index: 10;
-    background: var(--base01);
-    border-radius: 3px;
-    width: 100%;
-}
-#tag-dropdown:not(:empty) {
-    border: 1px solid var(--base02);
-}
-.tag-option {
-    padding: 0.3rem 0.5rem;
+.tag-text {
+    flex: 1;
+    min-width: 8rem;
+    background: none !important;
+    border: none !important;
+    outline: none !important;
+    font-family: 'Fira Mono', monospace;
     font-size: 0.8rem;
-    cursor: pointer;
-    color: var(--base04);
+    color: var(--base05);
+    padding: 0.15rem 0;
 }
-.tag-option:hover { background: var(--base02); color: var(--base0A); }
-.tag-option .count { color: var(--base03); font-size: 0.65rem; }
+.tag-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.35rem;
+    background: var(--base01);
+    border-radius: 0 0 3px 3px;
+}
+.tag-suggestions:empty {
+    display: none;
+}
+.tag-suggestion-item {
+    font-family: 'Fira Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.45rem;
+    border: 1px solid var(--base02);
+    border-radius: 3px;
+    background: none;
+    color: var(--base0D);
+    cursor: pointer;
+}
+.tag-suggestion-item:hover {
+    border-color: var(--base0D);
+    color: var(--base07);
+}
 #tag-suggestions {
     display: flex;
     flex-wrap: wrap;

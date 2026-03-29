@@ -12,16 +12,10 @@
         </div>
         <div class="form-row">
             <label>Tags</label>
-            <div class="tag-editor">
-                <div class="current-tags" id="new-post-tags"></div>
-                <input type="text" id="tag-input" placeholder="Add tag..."
-                       hx-get="/api/tags/search"
-                       hx-trigger="input changed delay:200ms"
-                       hx-target="#tag-dropdown"
-                       hx-params="q"
-                       name="q"
-                       autocomplete="off">
-                <div id="tag-dropdown"></div>
+            <div class="tag-input-wrap" data-tag-input>
+                <span class="tag-pills"></span>
+                <input type="text" class="tag-text" placeholder="Type a tag and press space..." autocomplete="off">
+                <div class="tag-suggestions"></div>
             </div>
         </div>
         <button type="submit" class="btn-primary">Create</button>
@@ -32,5 +26,5 @@
     {{template "post-filter" .}}
 </div>
 
-<script src="/static/drag-drop.js"></script>
+<script src="/static/tag-input.js"></script>
 {{end}}
