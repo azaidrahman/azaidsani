@@ -283,6 +283,17 @@ func (s *Server) CreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// If tags were provided, write them to the new post
+	tags := r.Form["tags"]
+	if len(tags) > 0 {
+		postPath := filepath.Join(postsDir, filename)
+		post, err := models.ParsePost(postPath)
+		if err == nil {
+			post.Tags = tags
+			models.WriteFrontmatter(postPath, post)
+		}
+	}
+
 	http.Redirect(w, r, "/posts/"+filename, http.StatusSeeOther)
 }
 func (s *Server) TagSearch(w http.ResponseWriter, r *http.Request) {
