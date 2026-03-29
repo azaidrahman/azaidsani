@@ -1,4 +1,18 @@
 {{ define "main" }}
+{{ if eq .Kind "term" }}
+<header>
+    <h1>Posts tagged "{{ .Title }}"</h1>
+    <p><a href="/tags/">All tags</a></p>
+</header>
+<div class="term-posts">
+    {{ range .Pages }}
+    <article class="term-post-item">
+        <time>{{ .Date.Format "2006-01-02" }}</time>
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+    </article>
+    {{ end }}
+</div>
+{{ else }}
 <header>
     <h1>Tags</h1>
 </header>
@@ -9,4 +23,5 @@
     </a>
     {{ end }}
 </div>
+{{ end }}
 {{ end }}

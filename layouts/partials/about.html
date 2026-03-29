@@ -42,11 +42,23 @@ document.querySelector('.email-copy-btn')?.addEventListener('click', function() 
 <div class="sidebar-tags">
     <h2 class="sidebar-tags__title">Tags</h2>
     <div class="sidebar-tags__list">
-        {{ range $tags.Alphabetical }}
+        {{ range first 3 $tags.ByCount }}
         <a href="{{ .Page.Permalink }}" class="tag-pill small">{{ .Page.Title }} <span class="tag-count">{{ .Count }}</span></a>
         {{ end }}
     </div>
+    <div class="sidebar-tags__search">
+        <input type="text" id="tag-search" class="tag-search-input" placeholder="search tags…" autocomplete="off">
+        <div id="tag-search-results" class="tag-search-results"></div>
+    </div>
 </div>
+<script>
+window.sidebarTags = [
+    {{ range $tags.ByCount }}
+    { name: {{ .Page.Title }}, url: {{ .Page.Permalink }}, count: {{ .Count }} },
+    {{ end }}
+];
+</script>
+<script src="{{ "js/tag-search.js" | absURL }}"></script>
 {{ end }}
 
 <!-- Activity Calendar -->

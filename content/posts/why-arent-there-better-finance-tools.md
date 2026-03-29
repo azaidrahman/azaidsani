@@ -7,7 +7,7 @@ tags:
     - finance
     - telegram
 ---
-{{< movies src="/images/ntbtstm-feature.jpg" caption="Nirvanna The Band The Show The Movie" >}}
+{{< movies src="/images/ntbtstm-feature.jpg" caption="Nirvanna The Band The Show The Movie (2025)" >}}
 ## Why arent there better tools for personal finance?
 Ive always wanted to manage my finances without relying on a third party app.
 Ive been using [Money Manager](https://www.realbyteapps.com) for years now.
@@ -55,6 +55,7 @@ done.
 
 ## Features
 {{< mid-img src="/images/screenshot-teleexpense-20260329-1101pm.png" caption="tele-expense /help screen" >}}
+
 The best part is I can do any accounting tricks I like. I can set up credit and
 debit accounts between friends so we can settle debts properly using actual
 accounting. This would be needlessly difficult on a spreadsheet (Ive tried).
