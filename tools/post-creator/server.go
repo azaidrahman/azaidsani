@@ -24,17 +24,33 @@ var staticFS embed.FS
 
 type Server struct {
 	ProjectRoot string
-	Templates   *template.Template
+	pages       map[string]*template.Template
 }
 
 func NewServer(projectRoot string) (*Server, error) {
-	tmpl, err := template.ParseFS(templateFS, "templates/*.html", "templates/partials/*.html")
+	// Parse partials as the base template set
+	base, err := template.ParseFS(templateFS, "templates/layout.html", "templates/partials/*.html")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("parsing base templates: %w", err)
 	}
+
+	// Each page gets its own clone so {{define "content"}} blocks don't conflict
+	pages := make(map[string]*template.Template)
+	for _, page := range []string{"post-list.html", "post-detail.html", "tag-dashboard.html"} {
+		clone, err := base.Clone()
+		if err != nil {
+			return nil, fmt.Errorf("cloning base for %s: %w", page, err)
+		}
+		_, err = clone.ParseFS(templateFS, "templates/"+page)
+		if err != nil {
+			return nil, fmt.Errorf("parsing %s: %w", page, err)
+		}
+		pages[page] = clone
+	}
+
 	return &Server{
 		ProjectRoot: projectRoot,
-		Templates:   tmpl,
+		pages:       pages,
 	}, nil
 }
 
@@ -101,9 +117,9 @@ func (s *Server) PostList(w http.ResponseWriter, r *http.Request) {
 	}{posts, allTags, activeTag}
 
 	if r.Header.Get("HX-Request") == "true" {
-		s.Templates.ExecuteTemplate(w, "post-filter", data)
+		s.pages["post-list.html"].ExecuteTemplate(w, "post-filter", data)
 	} else {
-		s.Templates.ExecuteTemplate(w, "layout.html", data)
+		s.pages["post-list.html"].ExecuteTemplate(w, "layout.html", data)
 	}
 }
 func (s *Server) PostDetail(w http.ResponseWriter, r *http.Request) {
@@ -127,7 +143,7 @@ func (s *Server) PostDetail(w http.ResponseWriter, r *http.Request) {
 		PreviewHTML template.HTML
 	}{post, template.HTML(previewHTML)}
 
-	s.Templates.ExecuteTemplate(w, "layout.html", data)
+	s.pages["post-detail.html"].ExecuteTemplate(w, "layout.html", data)
 }
 func (s *Server) Preview(w http.ResponseWriter, r *http.Request) {
 	filename := r.PathValue("filename")
@@ -158,7 +174,7 @@ func (s *Server) Preview(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("ETag", hash)
-	s.Templates.ExecuteTemplate(w, "preview", template.HTML(previewHTML))
+	s.pages["post-detail.html"].ExecuteTemplate(w, "preview", template.HTML(previewHTML))
 }
 func (s *Server) UpdateFrontmatter(w http.ResponseWriter, r *http.Request) {
 	filename := r.PathValue("filename")
@@ -233,7 +249,7 @@ func (s *Server) TagSearch(w http.ResponseWriter, r *http.Request) {
 	allTags := models.CollectAllTags(posts)
 	results := models.SearchTags(allTags, query)
 
-	s.Templates.ExecuteTemplate(w, "tag-search", results)
+	s.pages["post-detail.html"].ExecuteTemplate(w, "tag-search", results)
 }
 func (s *Server) TagSuggestions(w http.ResponseWriter, r *http.Request) {
 	filename := r.PathValue("filename")
@@ -253,7 +269,7 @@ func (s *Server) TagSuggestions(w http.ResponseWriter, r *http.Request) {
 	}
 
 	suggestions := models.SuggestTags(post, allPosts, 5)
-	s.Templates.ExecuteTemplate(w, "tag-suggest", suggestions)
+	s.pages["post-detail.html"].ExecuteTemplate(w, "tag-suggest", suggestions)
 }
 func (s *Server) TagDashboard(w http.ResponseWriter, r *http.Request) {
 	postsDir := filepath.Join(s.ProjectRoot, "content", "posts")
@@ -271,7 +287,7 @@ func (s *Server) TagDashboard(w http.ResponseWriter, r *http.Request) {
 		SimilarGroups []models.SimilarGroup
 	}{allTags, similarGroups}
 
-	s.Templates.ExecuteTemplate(w, "layout.html", data)
+	s.pages["tag-dashboard.html"].ExecuteTemplate(w, "layout.html", data)
 }
 func (s *Server) RenameTag(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
