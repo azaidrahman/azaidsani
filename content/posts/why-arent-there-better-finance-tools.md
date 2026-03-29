@@ -8,62 +8,68 @@ tags:
     - telegram
 ---
 {{< movies src="/images/ntbtstm-feature.jpg" caption="Nirvanna The Band The Show The Movie" >}}
-## Why arent there better tools for financing?
-Something I've always been meaning to do, is to be able to not rely on a third
-party app to manage my finances. I have been using [Money
-Manager](https://www.realbyteapps.com) for the longest time. Dont get me wrong,
-its a great app. But I feel so limited in that, if I wanted to extract some kind
-of insight that wasnt already available in the app, I would have to go through
-so many hoops and exports/etc. 
+## Why arent there better tools for personal finance?
+Ive always wanted to manage my finances without relying on a third party app.
+Ive been using [Money Manager](https://www.realbyteapps.com) for years now.
+Dont get me wrong, its a great app. But the moment I want any insight that isnt
+already baked in, I have to jump through hoops with exports and workarounds.
 
-In the end I end up not doing anything. I just record my daily expenses blindly.
-Next year, I will have to start paying for a house, and I just realized if I
-dont have a keen eye on my finances now, the hammer will fall and it wont fall
-gently.  
+So I end up not doing anything. I just record my daily expenses blindly. Next
+year I start paying for a house, and if I dont have a keen eye on my finances
+now, the hammer will fall and it wont fall gently.
 
-Introducing, **tele-expenses**! 
+Introducing, **tele-expenses**!
 
-So I built a telegram bot that not only track my expenses, but it gives me
-visibility on all my debts and spending habits and actively adjusts the budget
-according to my needs.
+So I built a Telegram bot that tracks my expenses, gives me visibility on all my
+debts and spending habits, and actively adjusts the budget according to my needs.
 
 ## Source
 I was inspired by this [post](https://x.com/mrkaran_/status/2035360975080370216) which spoke to me on many levels.
 
 1. I love the file > app philosophy.
-2. I wanted something accounting-like, and robust. Not a spreadsheet. Not a
+2. I wanted something accounting-like and robust. Not a spreadsheet. Not a
    database.
 
-So decided to build something that was simple, and inspired by my last bot on
-slack, I decided to try it on telegram, which i already use. 
+So I decided to build something simple. Inspired by a previous bot I built on
+Slack, I went with Telegram since I already use it.
+
+## Why hledger
+The backbone of this whole thing is [hledger](https://hledger.org). Its a
+plaintext accounting tool that uses *double-entry bookkeeping*. All your
+transactions live in a single journal file that you can read and edit with any
+text editor. Super simple.
+
+Every transaction has balanced debits and credits, just like real accounting. And
+because its all plaintext, I can version control it, script against it, and
+generate reports from it however I want. Its the kind of tool that scales from
+simple expense tracking all the way to proper multi-account bookkeeping without
+ever getting in the way.
 
 ## What it can do
-The app works by simply writing to a hledger file in a google cloud storage on
-GCS. Then I have a couple of yaml files that store the data on the categories,
-finances, etc.  
+The app works by writing to an hledger file stored on Google Cloud Storage. I
+also have a couple of YAML files for categories, budgets, and other config.
 
-So the actual usage of it is simple typing `/add` on the bot and it pops up as a
-guided wizard. Its abit of work and it lacks autocomplete. But im happy it does
-the job.
+The actual usage is simple. Type `/add` on the bot and it walks you through a
+guided wizard. Its a bit of work and it lacks autocomplete, but it gets the job
+done.
 
 ## Features
 {{< mid-img src="/images/screenshot-teleexpense-20260329-1101pm.png" caption="tele-expense /help screen" >}}
-The best part is I can do any accounting tricks I like. I can set up regular
-credit and debit accounts among friends so we can debts more reasonably in an
-accounting manner. This would be needlessly difficult on a spreadsheet (i've
-tried). 
+The best part is I can do any accounting tricks I like. I can set up credit and
+debit accounts between friends so we can settle debts properly using actual
+accounting. This would be needlessly difficult on a spreadsheet (Ive tried).
 
-I can also introduce rolling budgets, so if on any given category that doesnt
-have any spending, it can roll over to the next month for 3 months. So i can
-keep lets say a budget on apparel relatively low, but overtime it grows.
+I can also set up rolling budgets. If a category has no spending in a given
+month, the budget rolls over for up to 3 months. So I can keep something like an
+apparel budget relatively low, but over time it grows.
 
-TBH I dont know if other apps have this but man have I always wanted it.
+TBH I dont know if other apps have this, but Ive always wanted it.
 
-Finally, I have a easy way to introduce installments. I just set up the hledger
-by crediting from the Shoppee Account. Then setup multiple future transactions
-that eventually 0's out that debt.
+Finally, I have an easy way to handle installments. I set up hledger to credit
+from the Shopee account, then create future transactions that eventually zero
+out the debt.
 
 Its so fun to have robust accounting tools, all as a simple file.
 
-Cant wait to try out more.
+Cant wait to do more with it.
 
