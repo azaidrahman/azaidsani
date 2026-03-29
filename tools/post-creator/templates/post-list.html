@@ -1,0 +1,13 @@
+{{define "content"}}
+<div class="post-list-header">
+    <h1>Posts</h1>
+    <form hx-post="/api/posts/create" hx-target="body" hx-swap="outerHTML">
+        <input type="text" name="title" placeholder="New post title..." required>
+        <button type="submit">New Post</button>
+    </form>
+</div>
+
+<div id="post-list">
+    {{template "post-filter" .}}
+</div>
+{{end}}

@@ -6,6 +6,8 @@ import (
 	"io/fs"
 	"net/http"
 	"path/filepath"
+
+	"post-creator/models"
 )
 
 //go:embed templates/*
@@ -57,11 +59,71 @@ func (s *Server) Router() http.Handler {
 	return mux
 }
 
-func (s *Server) PostList(w http.ResponseWriter, r *http.Request)          {}
+func (s *Server) PostList(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+
+	postsDir := filepath.Join(s.ProjectRoot, "content", "posts")
+	posts, err := models.ParseAllPosts(postsDir)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	allTags := models.CollectAllTags(posts)
+	activeTag := r.URL.Query().Get("tag")
+
+	if activeTag != "" {
+		var filtered []models.Post
+		for _, p := range posts {
+			for _, t := range p.Tags {
+				if t == activeTag {
+					filtered = append(filtered, p)
+					break
+				}
+			}
+		}
+		posts = filtered
+	}
+
+	data := struct {
+		Posts     []models.Post
+		AllTags   []models.TagInfo
+		ActiveTag string
+	}{posts, allTags, activeTag}
+
+	if r.Header.Get("HX-Request") == "true" {
+		s.Templates.ExecuteTemplate(w, "post-filter", data)
+	} else {
+		s.Templates.ExecuteTemplate(w, "layout.html", data)
+	}
+}
 func (s *Server) PostDetail(w http.ResponseWriter, r *http.Request)        {}
 func (s *Server) Preview(w http.ResponseWriter, r *http.Request)           {}
 func (s *Server) UpdateFrontmatter(w http.ResponseWriter, r *http.Request) {}
-func (s *Server) CreatePost(w http.ResponseWriter, r *http.Request)        {}
+func (s *Server) CreatePost(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	title := r.FormValue("title")
+	if title == "" {
+		http.Error(w, "title is required", http.StatusBadRequest)
+		return
+	}
+
+	postsDir := filepath.Join(s.ProjectRoot, "content", "posts")
+	filename, err := models.CreatePost(postsDir, title)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/posts/"+filename, http.StatusSeeOther)
+}
 func (s *Server) TagSearch(w http.ResponseWriter, r *http.Request)         {}
 func (s *Server) TagSuggestions(w http.ResponseWriter, r *http.Request)    {}
 func (s *Server) TagDashboard(w http.ResponseWriter, r *http.Request)      {}
