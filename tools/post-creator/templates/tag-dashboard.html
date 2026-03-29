@@ -1,0 +1,38 @@
+{{define "content"}}
+<h1>Tag Dashboard</h1>
+
+{{if .SimilarGroups}}
+<div class="similar-tags">
+    <h2>Possible Duplicates</h2>
+    {{range .SimilarGroups}}
+    <div class="similar-group">
+        {{range .Tags}}
+        <span class="pill warning">{{.}}</span>
+        {{end}}
+        <form class="inline-merge" hx-post="/api/tags/merge" hx-target="body" hx-confirm="Merge these tags?">
+            {{range .Tags}}
+            <input type="hidden" name="sources" value="{{.}}">
+            {{end}}
+            <input type="text" name="target" placeholder="Merge into..." class="merge-input" required>
+            <button type="submit" class="btn-small">Merge</button>
+        </form>
+    </div>
+    {{end}}
+</div>
+{{end}}
+
+<div class="tag-grid">
+    {{range .Tags}}
+    <div class="tag-card">
+        <div class="tag-header">
+            <span class="pill">{{.Name}} <span class="count">{{.Count}}</span></span>
+            <form class="inline-rename" hx-post="/api/tags/rename" hx-target="body" hx-confirm="Rename this tag?">
+                <input type="hidden" name="old" value="{{.Name}}">
+                <input type="text" name="new" placeholder="New name..." class="rename-input" required>
+                <button type="submit" class="btn-small">Rename</button>
+            </form>
+        </div>
+    </div>
+    {{end}}
+</div>
+{{end}}

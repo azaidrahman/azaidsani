@@ -253,7 +253,64 @@ func (s *Server) TagSuggestions(w http.ResponseWriter, r *http.Request) {
 	suggestions := models.SuggestTags(post, allPosts, 5)
 	s.Templates.ExecuteTemplate(w, "tag-suggest", suggestions)
 }
-func (s *Server) TagDashboard(w http.ResponseWriter, r *http.Request)      {}
-func (s *Server) RenameTag(w http.ResponseWriter, r *http.Request)         {}
-func (s *Server) MergeTags(w http.ResponseWriter, r *http.Request)         {}
+func (s *Server) TagDashboard(w http.ResponseWriter, r *http.Request) {
+	postsDir := filepath.Join(s.ProjectRoot, "content", "posts")
+	posts, err := models.ParseAllPosts(postsDir)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	allTags := models.CollectAllTags(posts)
+	similarGroups := models.FindSimilarTags(allTags)
+
+	data := struct {
+		Tags          []models.TagInfo
+		SimilarGroups []models.SimilarGroup
+	}{allTags, similarGroups}
+
+	s.Templates.ExecuteTemplate(w, "layout.html", data)
+}
+func (s *Server) RenameTag(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	oldTag := r.FormValue("old")
+	newTag := r.FormValue("new")
+	if oldTag == "" || newTag == "" {
+		http.Error(w, "old and new tag names required", http.StatusBadRequest)
+		return
+	}
+
+	postsDir := filepath.Join(s.ProjectRoot, "content", "posts")
+	if _, err := models.RenameTag(postsDir, oldTag, newTag); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/tags", http.StatusSeeOther)
+}
+func (s *Server) MergeTags(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	sources := r.Form["sources"]
+	target := r.FormValue("target")
+	if len(sources) == 0 || target == "" {
+		http.Error(w, "sources and target required", http.StatusBadRequest)
+		return
+	}
+
+	postsDir := filepath.Join(s.ProjectRoot, "content", "posts")
+	if _, err := models.MergeTags(postsDir, sources, target); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/tags", http.StatusSeeOther)
+}
 func (s *Server) ImageUpload(w http.ResponseWriter, r *http.Request)       {}
