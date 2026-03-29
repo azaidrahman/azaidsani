@@ -36,6 +36,19 @@ document.querySelector('.email-copy-btn')?.addEventListener('click', function() 
 });
 </script>
 
+<!-- Tags -->
+{{ $tags := $.Site.Taxonomies.tags }}
+{{ if $tags }}
+<div class="sidebar-tags">
+    <h2 class="sidebar-tags__title">Tags</h2>
+    <div class="sidebar-tags__list">
+        {{ range $tags.Alphabetical }}
+        <a href="{{ .Page.Permalink }}" class="tag-pill small">{{ .Page.Title }} <span class="tag-count">{{ .Count }}</span></a>
+        {{ end }}
+    </div>
+</div>
+{{ end }}
+
 <!-- Activity Calendar -->
 <h2 class="acal-title">Activity Calendar</h2>
 <div id="activity-cal">
