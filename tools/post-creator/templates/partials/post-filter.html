@@ -1,0 +1,38 @@
+{{define "post-filter"}}
+<div class="tag-filter">
+    {{range .AllTags}}
+    <button class="pill {{if eq .Name $.ActiveTag}}active{{end}}"
+            hx-get="/?tag={{.Name}}"
+            hx-target="#post-list"
+            hx-swap="innerHTML"
+            hx-push-url="true">
+        {{.Name}} <span class="count">{{.Count}}</span>
+    </button>
+    {{end}}
+    {{if .ActiveTag}}
+    <button class="pill clear" hx-get="/" hx-target="#post-list" hx-swap="innerHTML" hx-push-url="true">
+        clear
+    </button>
+    {{end}}
+</div>
+
+<table class="post-table">
+    <thead>
+        <tr><th>Title</th><th>Date</th><th>Status</th><th>Tags</th></tr>
+    </thead>
+    <tbody>
+        {{range .Posts}}
+        <tr>
+            <td><a href="/posts/{{.Filename}}">{{.Title}}</a></td>
+            <td>{{.Date.Format "2006-01-02"}}</td>
+            <td>{{if .Draft}}<span class="badge draft">draft</span>{{else}}<span class="badge published">published</span>{{end}}</td>
+            <td>
+                {{range .Tags}}
+                <span class="pill small">{{.}}</span>
+                {{end}}
+            </td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+{{end}}
