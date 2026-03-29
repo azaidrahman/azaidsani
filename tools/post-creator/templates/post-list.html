@@ -1,13 +1,36 @@
 {{define "content"}}
 <div class="post-list-header">
     <h1>Posts</h1>
+    <button id="new-post-btn" class="btn-primary" onclick="document.getElementById('new-post-form').classList.toggle('hidden')">+ New Post</button>
+</div>
+
+<div id="new-post-form" class="new-post-form hidden">
     <form hx-post="/api/posts/create" hx-target="body" hx-swap="outerHTML">
-        <input type="text" name="title" placeholder="New post title..." required>
-        <button type="submit">New Post</button>
+        <div class="form-row">
+            <label>Title</label>
+            <input type="text" name="title" placeholder="Post title..." required>
+        </div>
+        <div class="form-row">
+            <label>Tags</label>
+            <div class="tag-editor">
+                <div class="current-tags" id="new-post-tags"></div>
+                <input type="text" id="tag-input" placeholder="Add tag..."
+                       hx-get="/api/tags/search"
+                       hx-trigger="keyup changed delay:200ms"
+                       hx-target="#tag-dropdown"
+                       hx-include="[name='q']"
+                       name="q"
+                       autocomplete="off">
+                <div id="tag-dropdown"></div>
+            </div>
+        </div>
+        <button type="submit" class="btn-primary">Create</button>
     </form>
 </div>
 
 <div id="post-list">
     {{template "post-filter" .}}
 </div>
+
+<script src="/static/drag-drop.js"></script>
 {{end}}
