@@ -32,9 +32,9 @@
                 </div>
                 <input type="text" id="tag-input" placeholder="Add tag..."
                        hx-get="/api/tags/search"
-                       hx-trigger="keyup changed delay:200ms"
+                       hx-trigger="input changed delay:200ms"
                        hx-target="#tag-dropdown"
-                       hx-include="[name='q']"
+                       hx-params="q"
                        name="q"
                        autocomplete="off">
                 <div id="tag-dropdown"></div>
