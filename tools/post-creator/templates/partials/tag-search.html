@@ -1,0 +1,7 @@
+{{define "tag-search"}}
+{{range .}}
+<div class="tag-option" data-tag="{{.Name}}">
+    {{.Name}} <span class="count">{{.Count}}</span>
+</div>
+{{end}}
+{{end}}
