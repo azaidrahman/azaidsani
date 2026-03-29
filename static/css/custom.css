@@ -137,6 +137,8 @@ img.about__logo {
 
 .movies figcaption {
     text-align: center;
+    color: var(--base04);
+    font-size: 0.8rem;
 }
 
 /* Mid-img — centered, height-capped images */
@@ -153,6 +155,8 @@ img.about__logo {
 
 .mid-img figcaption {
     text-align: center;
+    color: var(--base04);
+    font-size: 0.8rem;
 }
 
 /* Post header — textured banner at top of articles */
@@ -448,6 +452,34 @@ img.about__logo {
     50%      { opacity: 0; }
 }
 
+/* Sidebar scrollbar — hidden until hover, thin and minimal */
+.page__aside {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.3s;
+}
+
+.page__aside:hover {
+    scrollbar-color: var(--base03) transparent;
+}
+
+.page__aside::-webkit-scrollbar {
+    width: 4px;
+}
+
+.page__aside::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.page__aside::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 4px;
+}
+
+.page__aside:hover::-webkit-scrollbar-thumb {
+    background: var(--base03);
+}
+
 /* --- Mobile --- */
 
 /* Prevent images from overflowing on small screens */
@@ -676,6 +708,35 @@ img {
     cursor: grabbing;
 }
 
+/* --- Post Image Zoom (desktop only) --- */
+
+@media (hover: hover) and (pointer: fine) {
+    .content__body img {
+        cursor: zoom-in;
+    }
+}
+
+.post-zoom-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 90;
+    justify-content: center;
+    align-items: center;
+    cursor: zoom-out;
+}
+
+.post-zoom-overlay.active {
+    display: flex;
+}
+
+.post-zoom-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
 /* --- Footer --- */
 
 .page__footer {
@@ -732,6 +793,37 @@ img {
     gap: 0.35rem;
 }
 
+.sidebar-tags__search {
+    margin-top: 0.35rem;
+}
+
+.tag-search-input {
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 0.7rem;
+    padding: 0.05rem 0.35rem;
+    border: 1px solid var(--base03);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--base05);
+    outline: none;
+}
+
+.tag-search-input::placeholder {
+    color: var(--base04);
+}
+
+.tag-search-input:focus {
+    border-color: var(--base0A);
+}
+
+.tag-search-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.35rem;
+}
+
 /* /tags page */
 .tag-page {
     display: flex;
@@ -752,7 +844,7 @@ img {
 }
 
 .term-post-item time {
-    color: var(--base01);
+    color: var(--base04);
     font-size: 0.85rem;
     min-width: 6rem;
 }
