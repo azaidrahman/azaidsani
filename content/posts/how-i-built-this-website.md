@@ -1,8 +1,11 @@
 ---
-title: "How I Built This Website"
-date: 2026-03-16
+title: How I Built This Website
+date: 2026-03-16T00:00:00Z
 draft: false
-tags: ["hugo", "cloudflare", "ai"]
+tags:
+    - hugo
+    - cloudflare
+    - ai
 ---
 {{< movies src="/images/tokyo-fist.jpg" caption="Tokyo Fist (1995)" >}}
 I've been meaning to put a personal site together for a while. Not anything fancy, just somewhere to write and put my thoughts out. Between work and everything else, it kept getting pushed back. So I decided to stop overthinking it and just get something live.

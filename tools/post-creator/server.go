@@ -109,11 +109,12 @@ func (s *Server) Router() http.Handler {
 	mux.HandleFunc("POST /api/posts/{filename}/frontmatter", s.UpdateFrontmatter)
 	mux.HandleFunc("POST /api/posts/create", s.CreatePost)
 
-	mux.HandleFunc("GET /api/tags/search", s.TagSearch)
+	mux.HandleFunc("GET /api/tags", s.TagsJSON)
 	mux.HandleFunc("GET /api/posts/{filename}/tag-suggestions", s.TagSuggestions)
 	mux.HandleFunc("POST /api/tags/rename", s.RenameTag)
 	mux.HandleFunc("POST /api/tags/merge", s.MergeTags)
 
+	mux.HandleFunc("POST /api/posts/{filename}/delete", s.DeletePost)
 	mux.HandleFunc("POST /api/images/upload", s.ImageUpload)
 
 	return mux
@@ -296,13 +297,7 @@ func (s *Server) CreatePost(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/posts/"+filename, http.StatusSeeOther)
 }
-func (s *Server) TagSearch(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query().Get("q")
-	if query == "" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
-
+func (s *Server) TagsJSON(w http.ResponseWriter, r *http.Request) {
 	postsDir := filepath.Join(s.ProjectRoot, "content", "posts")
 	posts, err := models.ParseAllPosts(postsDir)
 	if err != nil {
@@ -311,9 +306,13 @@ func (s *Server) TagSearch(w http.ResponseWriter, r *http.Request) {
 	}
 
 	allTags := models.CollectAllTags(posts)
-	results := models.SearchTags(allTags, query)
+	names := make([]string, len(allTags))
+	for i, t := range allTags {
+		names[i] = t.Name
+	}
 
-	s.pages["post-detail.html"].ExecuteTemplate(w, "tag-search", results)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(names)
 }
 func (s *Server) TagSuggestions(w http.ResponseWriter, r *http.Request) {
 	filename := r.PathValue("filename")
@@ -440,4 +439,20 @@ func (s *Server) ImageUpload(w http.ResponseWriter, r *http.Request) {
 		"recommended_shortcode": recommended,
 		"shortcode_text":        models.GenerateShortcode(recommended, cleanedName, ""),
 	})
+}
+func (s *Server) DeletePost(w http.ResponseWriter, r *http.Request) {
+	filename := r.PathValue("filename")
+	postPath := filepath.Join(s.ProjectRoot, "content", "posts", filename)
+
+	if _, err := os.Stat(postPath); err != nil {
+		http.Error(w, "post not found", http.StatusNotFound)
+		return
+	}
+
+	if err := os.Remove(postPath); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

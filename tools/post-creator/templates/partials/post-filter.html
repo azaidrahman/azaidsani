@@ -19,7 +19,7 @@
 
 <table class="post-table">
     <thead>
-        <tr><th>Title</th><th>Date</th><th>Status</th><th>Tags</th></tr>
+        <tr><th>Title</th><th>Date</th><th>Status</th><th>Tags</th><th></th></tr>
     </thead>
     <tbody>
         {{range .Posts}}
@@ -31,6 +31,12 @@
                 {{range .Tags}}
                 <span class="pill small">{{.}}</span>
                 {{end}}
+            </td>
+            <td>
+                <button class="btn-delete"
+                        hx-post="/api/posts/{{.Filename}}/delete"
+                        hx-confirm="Delete '{{.Title}}'? This cannot be undone."
+                        hx-target="body">x</button>
             </td>
         </tr>
         {{end}}

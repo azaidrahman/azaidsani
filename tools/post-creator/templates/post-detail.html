@@ -20,24 +20,10 @@
         </div>
         <div class="form-row">
             <label>Tags</label>
-            <div class="tag-editor">
-                <div class="current-tags" id="current-tags">
-                    {{range .Post.Tags}}
-                    <span class="pill editable" data-tag="{{.}}">
-                        {{.}}
-                        <input type="hidden" name="tags" value="{{.}}">
-                        <button type="button" class="remove-tag" onclick="this.parentElement.remove()">x</button>
-                    </span>
-                    {{end}}
-                </div>
-                <input type="text" id="tag-input" placeholder="Add tag..."
-                       hx-get="/api/tags/search"
-                       hx-trigger="input changed delay:200ms"
-                       hx-target="#tag-dropdown"
-                       hx-params="q"
-                       name="q"
-                       autocomplete="off">
-                <div id="tag-dropdown"></div>
+            <div class="tag-input-wrap" data-tag-input data-initial="{{range $i, $t := .Post.Tags}}{{if $i}} {{end}}{{$t}}{{end}}">
+                <span class="tag-pills"></span>
+                <input type="text" class="tag-text" placeholder="Type a tag and press space..." autocomplete="off">
+                <div class="tag-suggestions"></div>
             </div>
         </div>
         <div class="form-row"
@@ -80,5 +66,6 @@
     </div>
 </div>
 
+<script src="/static/tag-input.js"></script>
 <script src="/static/drag-drop.js"></script>
 {{end}}
