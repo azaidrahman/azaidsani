@@ -28,8 +28,46 @@ type Server struct {
 }
 
 func NewServer(projectRoot string) (*Server, error) {
+	// Template functions
+	funcMap := template.FuncMap{
+		"hasTag": func(tags []string, tag string) bool {
+			for _, t := range tags {
+				if t == tag {
+					return true
+				}
+			}
+			return false
+		},
+		"toggleTagURL": func(activeTags []string, tag string) string {
+			// If tag is active, remove it; otherwise add it
+			var newTags []string
+			found := false
+			for _, t := range activeTags {
+				if t == tag {
+					found = true
+				} else {
+					newTags = append(newTags, t)
+				}
+			}
+			if !found {
+				newTags = append(newTags, tag)
+			}
+			if len(newTags) == 0 {
+				return "/"
+			}
+			q := "?"
+			for i, t := range newTags {
+				if i > 0 {
+					q += "&"
+				}
+				q += "tag=" + t
+			}
+			return q
+		},
+	}
+
 	// Parse partials as the base template set
-	base, err := template.ParseFS(templateFS, "templates/layout.html", "templates/partials/*.html")
+	base, err := template.New("").Funcs(funcMap).ParseFS(templateFS, "templates/layout.html", "templates/partials/*.html")
 	if err != nil {
 		return nil, fmt.Errorf("parsing base templates: %w", err)
 	}
@@ -95,26 +133,41 @@ func (s *Server) PostList(w http.ResponseWriter, r *http.Request) {
 	}
 
 	allTags := models.CollectAllTags(posts)
-	activeTag := r.URL.Query().Get("tag")
+	activeTags := r.URL.Query()["tag"]
 
-	if activeTag != "" {
+	if len(activeTags) > 0 {
+		activeSet := make(map[string]bool)
+		for _, t := range activeTags {
+			activeSet[t] = true
+		}
 		var filtered []models.Post
 		for _, p := range posts {
-			for _, t := range p.Tags {
-				if t == activeTag {
-					filtered = append(filtered, p)
+			matchAll := true
+			for _, at := range activeTags {
+				found := false
+				for _, pt := range p.Tags {
+					if pt == at {
+						found = true
+						break
+					}
+				}
+				if !found {
+					matchAll = false
 					break
 				}
+			}
+			if matchAll {
+				filtered = append(filtered, p)
 			}
 		}
 		posts = filtered
 	}
 
 	data := struct {
-		Posts     []models.Post
-		AllTags   []models.TagInfo
-		ActiveTag string
-	}{posts, allTags, activeTag}
+		Posts      []models.Post
+		AllTags    []models.TagInfo
+		ActiveTags []string
+	}{posts, allTags, activeTags}
 
 	if r.Header.Get("HX-Request") == "true" {
 		s.pages["post-list.html"].ExecuteTemplate(w, "post-filter", data)
