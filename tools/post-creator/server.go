@@ -3,8 +3,10 @@ package main
 import (
 	"crypto/md5"
 	"embed"
+	"encoding/json"
 	"fmt"
 	"html/template"
+	"io"
 	"io/fs"
 	"net/http"
 	"os"
@@ -313,4 +315,49 @@ func (s *Server) MergeTags(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/tags", http.StatusSeeOther)
 }
-func (s *Server) ImageUpload(w http.ResponseWriter, r *http.Request)       {}
+func (s *Server) ImageUpload(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseMultipartForm(10 << 20); err != nil {
+		http.Error(w, "file too large", http.StatusBadRequest)
+		return
+	}
+
+	file, header, err := r.FormFile("image")
+	if err != nil {
+		http.Error(w, "no image provided", http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	cleanedName := models.CleanFilename(header.Filename)
+	destPath := filepath.Join(s.ProjectRoot, "static", "images", cleanedName)
+
+	dst, err := os.Create(destPath)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer dst.Close()
+
+	if _, err := io.Copy(dst, file); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	dst.Close()
+
+	width, height, err := models.DetectDimensions(destPath)
+	if err != nil {
+		// Image saved but dimensions couldn't be read — still respond
+		width, height = 0, 0
+	}
+
+	recommended := models.RecommendShortcode(width, height)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"filename":              cleanedName,
+		"width":                 width,
+		"height":                height,
+		"recommended_shortcode": recommended,
+		"shortcode_text":        models.GenerateShortcode(recommended, cleanedName, ""),
+	})
+}
